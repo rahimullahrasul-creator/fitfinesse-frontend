@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Fit Finesse - Bet on Yourself</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff4500">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <style>
+        :root {
+            --electric-orange: #ff4500;
+            --neon-green: #00ff41;
+            --deep-black: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #2a2a2a;
+            --light-gray: #666;
+            --white: #ffffff;
+            --success: #00ff41;
+            --danger: #ff1744;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background: var(--deep-black);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 69, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
+                var(--deep-black);
+            animation: bgShift 20s ease infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        /* Auth Screen */
+        .auth-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--electric-orange), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 69, 0, 0.8)); }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            margin-bottom: 3rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .auth-form {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--dark-gray);
+            border: 2px solid var(--mid-gray);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: 'Archivo', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--electric-orange);
+            box-shadow: 0 0 0 4px rgba(255, 69, 0, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--electric-orange), #ff6b35);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 69, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--mid-gray);
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--electric-orange);
+            background: rgba(255, 69, 0, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: var(--electric-orange);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            background: var(--dark-gray);
+            padding: 1rem 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            border-top: 1px solid var(--mid-gray);
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .nav-item.active {
+            color: var(--electric-orange);
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 1.5rem 1rem;
+            background: linear-gradient(180deg, var(--dark-gray) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+            padding-bottom: 100px;
+        }
+
+        /* Pool Card */
+        .pool-card {
+            background: var(--dark-gray);
+            border: 2px solid var(--mid-gray);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .pool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--electric-orange), var(--neon-green));
+        }
+
+        .pool-card:hover {
+            border-color: var(--electric-orange);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(255, 69, 0, 0.2);
+        }
+
+        .pool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .pool-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .pool-pot {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--neon-green);
+        }
+
+        .pool-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            background: var(--mid-gray);
+            padding: 0.75rem;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .pool-members {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .member-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--mid-gray);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .member-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .member-status.success {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        .member-status.pending {
+            background: var(--light-gray);
+        }
+
+        .member-status.failed {
+            background: var(--danger);
+            box-shadow: 0 0 10px var(--danger);
+        }
+
+        .checkin-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--neon-green), #00cc33);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--deep-black);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .checkin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 65, 0.4);
+        }
+
+        .checkin-btn:disabled {
+            background: var(--mid-gray);
+            cursor: not-allowed;
+            color: var(--light-gray);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--dark-gray);
+            border: 2px solid var(--mid-gray);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--electric-orange), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-section {
+            background: var(--dark-gray);
+            border: 2px solid var(--mid-gray);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--dark-gray);
+            border: 2px solid var(--electric-orange);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .modal p {
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--light-gray);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--mid-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--electric-orange), var(--neon-green));
+            transition: width 0.3s;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--light-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // API Configuration
+        const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+        // API Helper
+        const api = {
+            async request(endpoint, options = {}) {
+                const token = localStorage.getItem('token');
+                const headers = {
+                    'Content-Type': 'application/json',
+                    ...(token && { 'Authorization': `Bearer ${token}` })
+                };
+
+                const response = await fetch(`${API_URL}${endpoint}`, {
+                    ...options,
+                    headers: { ...headers, ...options.headers }
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Request failed');
+                }
+
+                return response.json();
+            },
+
+            async signup(email, name, password) {
+                return this.request('/auth/signup', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, name, password })
+                });
+            },
+
+            async login(email, password) {
+                return this.request('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+            },
+
+            async getMe() {
+                return this.request('/auth/me');
+            },
+
+            async getPools() {
+                return this.request('/pools');
+            },
+
+            async createPool(poolData) {
+                return this.request('/pools', {
+                    method: 'POST',
+                    body: JSON.stringify(poolData)
+                });
+            },
+
+            async checkIn(poolId, lat, lng) {
+                return this.request('/checkins', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        pool_id: poolId,
+                        latitude: lat,
+                        longitude: lng
+                    })
+                });
+            },
+
+            async getStats() {
+                return this.request('/stats');
+            }
+        };
+
+        function App() {
+            const [currentScreen, setCurrentScreen] = useState('auth');
+            const [authMode, setAuthMode] = useState('login');
+            const [user, setUser] = useState(null);
+            const [pools, setPools] = useState([]);
+            const [stats, setStats] = useState(null);
+            const [activeNav, setActiveNav] = useState('pools');
+            const [showModal, setShowModal] = useState(false);
+            const [modalContent, setModalContent] = useState({});
+            const [error, setError] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            useEffect(() => {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    loadUser();
+                }
+            }, []);
+
+            const loadUser = async () => {
+                try {
+                    const userData = await api.getMe();
+                    setUser(userData);
+                    setCurrentScreen('main');
+                    loadPools();
+                    loadStats();
+                } catch (err) {
+                    localStorage.removeItem('token');
+                }
+            };
+
+            const loadPools = async () => {
+                try {
+                    const poolsData = await api.getPools();
+                    setPools(poolsData);
+                } catch (err) {
+                    console.error('Failed to load pools:', err);
+                }
+            };
+
+            const loadStats = async () => {
+                try {
+                    const statsData = await api.getStats();
+                    setStats(statsData);
+                } catch (err) {
+                    console.error('Failed to load stats:', err);
+                }
+            };
+
+            const handleAuth = async (e) => {
+                e.preventDefault();
+                setError('');
+                setLoading(true);
+
+                const formData = new FormData(e.target);
+                const email = formData.get('email');
+                const password = formData.get('password');
+                const name = formData.get('name');
+
+                try {
+                    let result;
+                    if (authMode === 'signup') {
+                        result = await api.signup(email, name, password);
+                    } else {
+                        result = await api.login(email, password);
+                    }
+
+                    localStorage.setItem('token', result.token);
+                    setUser(result.user);
+                    setCurrentScreen('main');
+                    loadPools();
+                    loadStats();
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const handleCheckIn = async (poolId) => {
+                try {
+                    // Get user's location
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            async (position) => {
+                                await api.checkIn(
+                                    poolId,
+                                    position.coords.latitude,
+                                    position.coords.longitude
+                                );
+
+                                setModalContent({
+                                    icon: '✅',
+                                    title: 'Check-in Successful!',
+                                    message: 'Your gym visit has been verified. Keep crushing it!'
+                                });
+                                setShowModal(true);
+                                loadPools();
+
+                                setTimeout(() => setShowModal(false), 2000);
+                            },
+                            (error) => {
+                                setModalContent({
+                                    icon: '⚠️',
+                                    title: 'Location Required',
+                                    message: 'Please enable location services to check in.'
+                                });
+                                setShowModal(true);
+                                setTimeout(() => setShowModal(false), 3000);
+                            }
+                        );
+                    } else {
+                        // Fallback if geolocation not supported
+                        await api.checkIn(poolId, null, null);
+                        loadPools();
+                    }
+                } catch (err) {
+                    setModalContent({
+                        icon: '❌',
+                        title: 'Check-in Failed',
+                        message: err.message
+                    });
+                    setShowModal(true);
+                    setTimeout(() => setShowModal(false), 2000);
+                }
+            };
+
+            const handleCreatePool = async (e) => {
+                e.preventDefault();
+                setError('');
+                setLoading(true);
+
+                const formData = new FormData(e.target);
+                
+                try {
+                    await api.createPool({
+                        name: formData.get('poolName'),
+                        weekly_goal: parseInt(formData.get('weeklyGoal')),
+                        stake: parseFloat(formData.get('stake')),
+                        member_emails: formData.get('members').split(',').map(e => e.trim())
+                    });
+
+                    setModalContent({
+                        icon: '🎉',
+                        title: 'Pool Created!',
+                        message: 'Your pool is live. Time to get to work!'
+                    });
+                    setShowModal(true);
+                    loadPools();
+                    
+                    setTimeout(() => {
+                        setShowModal(false);
+                        setActiveNav('pools');
+                    }, 2000);
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const handleLogout = () => {
+                localStorage.removeItem('token');
+                setUser(null);
+                setPools([]);
+                setStats(null);
+                setCurrentScreen('auth');
+                setActiveNav('pools');
+            };
+
+            // Auth Screen
+            if (currentScreen === 'auth') {
+                return (
+                    <div className="auth-screen animate-in">
+                        <h1 className="logo">FIT FINESSE</h1>
+                        <p className="tagline">Bet on Yourself</p>
+                        <form className="auth-form" onSubmit={handleAuth}>
+                            {authMode === 'signup' && (
+                                <div className="input-group">
+                                    <input type="text" name="name" placeholder="Your Name" required />
+                                </div>
+                            )}
+                            <div className="input-group">
+                                <input type="email" name="email" placeholder="Email" required />
+                            </div>
+                            <div className="input-group">
+                                <input type="password" name="password" placeholder="Password" required />
+                            </div>
+                            {error && <div className="error">{error}</div>}
+                            <button type="submit" className="btn btn-primary" disabled={loading}>
+                                {loading ? 'Loading...' : (authMode === 'login' ? 'Login' : 'Sign Up')}
+                            </button>
+                            <button 
+                                type="button" 
+                                className="link-btn"
+                                onClick={() => {
+                                    setAuthMode(authMode === 'login' ? 'signup' : 'login');
+                                    setError('');
+                                }}
+                            >
+                                {authMode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Login'}
+                            </button>
+                        </form>
+                    </div>
+                );
+            }
+
+            // Main App
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>FIT FINESSE</h1>
+                        <p>Hey {user?.name}, keep grinding 💪</p>
+                    </div>
+
+                    <div className="main-content">
+                        {activeNav === 'pools' && (
+                            <>
+                                {pools.length === 0 ? (
+                                    <div className="empty-state">
+                                        <div className="empty-state-icon">🏋️</div>
+                                        <h2>No Active Pools</h2>
+                                        <p>Create your first pool and start winning!</p>
+                                    </div>
+                                ) : (
+                                    pools.map(pool => (
+                                        <div key={pool.id} className="pool-card animate-in">
+                                            <div className="pool-header">
+                                                <div className="pool-name">{pool.name}</div>
+                                                <div className="pool-pot">${pool.pot}</div>
+                                            </div>
+                                            
+                                            <div className="pool-info">
+                                                <div className="info-item">
+                                                    <div className="info-label">Your Progress</div>
+                                                    <div className="info-value">{pool.your_checkins}/{pool.weekly_goal}</div>
+                                                </div>
+                                                <div className="info-item">
+                                                    <div className="info-label">Stake</div>
+                                                    <div className="info-value">${pool.stake}</div>
+                                                </div>
+                                            </div>
+
+                                            <div className="progress-bar">
+                                                <div className="progress-fill" style={{width: `${(pool.your_checkins / pool.weekly_goal) * 100}%`}}></div>
+                                            </div>
+
+                                            <div style={{marginTop: '1rem'}}>
+                                                <div className="info-label" style={{marginBottom: '0.5rem'}}>Members</div>
+                                                <div className="pool-members">
+                                                    {pool.members.map(member => (
+                                                        <div key={member} className="member-badge">
+                                                            <div className={`member-status ${
+                                                                (pool.member_status[member] || 0) >= pool.weekly_goal ? 'success' : 
+                                                                (pool.member_status[member] || 0) > 0 ? 'pending' : 'failed'
+                                                            }`}></div>
+                                                            {member} ({pool.member_status[member] || 0})
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <button 
+                                                className="checkin-btn" 
+                                                onClick={() => handleCheckIn(pool.id)}
+                                                disabled={pool.your_checkins >= pool.weekly_goal}
+                                            >
+                                                {pool.your_checkins >= pool.weekly_goal ? 'Goal Complete! 🎉' : 'Check In Now'}
+                                            </button>
+                                        </div>
+                                    ))
+                                )}
+                            </>
+                        )}
+
+                        {activeNav === 'create' && (
+                            <form className="form-section animate-in" onSubmit={handleCreatePool}>
+                                <h3>Create New Pool</h3>
+                                
+                                <label>Pool Name</label>
+                                <input type="text" name="poolName" placeholder="e.g., Morning Grind" required />
+
+                                <label>Weekly Gym Goal</label>
+                                <input type="number" name="weeklyGoal" min="1" max="7" placeholder="3" required />
+
+                                <label>Your Stake ($)</label>
+                                <input type="number" name="stake" min="5" max="100" step="0.01" placeholder="20" required />
+
+                                <label>Invite Friends (comma separated emails)</label>
+                                <input type="text" name="members" placeholder="friend@email.com, buddy@email.com" required />
+
+                                {error && <div className="error">{error}</div>}
+
+                                <button type="submit" className="btn btn-primary" style={{marginTop: '1.5rem'}} disabled={loading}>
+                                    {loading ? 'Creating...' : 'Create Pool'}
+                                </button>
+                            </form>
+                        )}
+
+                        {activeNav === 'stats' && stats && (
+                            <>
+                                <div className="stats-grid animate-in">
+                                    <div className="stat-card">
+                                        <div className="stat-value">${stats.total_winnings}</div>
+                                        <div className="stat-label">Total Winnings</div>
+                                    </div>
+                                    <div className="stat-card">
+                                        <div className="stat-value">{stats.total_pools}</div>
+                                        <div className="stat-label">Pools Joined</div>
+                                    </div>
+                                    <div className="stat-card">
+                                        <div className="stat-value">{stats.win_rate}%</div>
+                                        <div className="stat-label">Win Rate</div>
+                                    </div>
+                                    <div className="stat-card">
+                                        <div className="stat-value">{stats.current_streak}</div>
+                                        <div className="stat-label">Week Streak</div>
+                                    </div>
+                                </div>
+
+                                <div className="pool-card animate-in">
+                                    <h3 style={{marginBottom: '1rem'}}>Account</h3>
+                                    <button className="btn btn-secondary" onClick={handleLogout}>
+                                        Logout
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="nav">
+                        <div 
+                            className={`nav-item ${activeNav === 'pools' ? 'active' : ''}`}
+                            onClick={() => setActiveNav('pools')}
+                        >
+                            Pools
+                        </div>
+                        <div 
+                            className={`nav-item ${activeNav === 'create' ? 'active' : ''}`}
+                            onClick={() => setActiveNav('create')}
+                        >
+                            Create
+                        </div>
+                        <div 
+                            className={`nav-item ${activeNav === 'stats' ? 'active' : ''}`}
+                            onClick={() => setActiveNav('stats')}
+                        >
+                            Stats
+                        </div>
+                    </div>
+
+                    {showModal && (
+                        <div className="modal">
+                            <div className="modal-content animate-in">
+                                <div className="modal-icon">{modalContent.icon}</div>
+                                <h2>{modalContent.title}</h2>
+                                <p>{modalContent.message}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
