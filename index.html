@@ -798,35 +798,37 @@
                         <h1 className="logo">FIT FINESSE</h1>
                         <p className="tagline">Bet on Yourself</p>
                         <form className="auth-form" onSubmit={handleAuth}>
-                            {authMode === 'signup' && (
-                                <div className="input-group">
-                                    <input type="text" name="name" placeholder="Your Name" required />
-                                </div>
-                            )}
-                            <div className="input-group">
-                                <input type="email" name="email" placeholder="Email" required />
-                            </div>
-                            <div className="input-group">
-    <input type="password" name="password" placeholder="Password" required />
-</div>
-<div className="input-group">
-    <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
-</div>
-                            {error && <div className="error">{error}</div>}
-                            <button type="submit" className="btn btn-primary" disabled={loading}>
-                                {loading ? 'Loading...' : (authMode === 'login' ? 'Login' : 'Sign Up')}
-                            </button>
-                            <button 
-                                type="button" 
-                                className="link-btn"
-                                onClick={() => {
-                                    setAuthMode(authMode === 'login' ? 'signup' : 'login');
-                                    setError('');
-                                }}
-                            >
-                                {authMode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Login'}
-                            </button>
-                        </form>
+    {authMode === 'signup' && (
+        <div className="input-group">
+            <input type="text" name="name" placeholder="Your Name" required />
+        </div>
+    )}
+    <div className="input-group">
+        <input type="email" name="email" placeholder="Email" required />
+    </div>
+    <div className="input-group">
+        <input type="password" name="password" placeholder="Password" required />
+    </div>
+    {authMode === 'signup' && (
+        <div className="input-group">
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+        </div>
+    )}
+    {error && <div className="error">{error}</div>}
+    <button type="submit" className="btn btn-primary" disabled={loading}>
+        {loading ? 'Loading...' : (authMode === 'login' ? 'Login' : 'Sign Up')}
+    </button>
+    <button 
+        type="button" 
+        className="link-btn"
+        onClick={() => {
+            setAuthMode(authMode === 'login' ? 'signup' : 'login');
+            setError('');
+        }}
+    >
+        {authMode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Login'}
+    </button>
+</form>
                     </div>
                 );
             }
