@@ -819,13 +819,15 @@
         {loading ? 'Loading...' : (authMode === 'login' ? 'Login' : 'Sign Up')}
     </button>
     <button 
-        type="button" 
-        className="link-btn"
-        onClick={() => {
-            setAuthMode(authMode === 'login' ? 'signup' : 'login');
-            setError('');
-        }}
-    >
+    type="button" 
+    className="link-btn"
+    onClick={(e) => {
+        setAuthMode(authMode === 'login' ? 'signup' : 'login');
+        setError('');
+        // Clear the form
+        e.target.closest('form').reset();
+    }}
+>
         {authMode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Login'}
     </button>
 </form>
