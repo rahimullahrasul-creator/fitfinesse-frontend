@@ -668,9 +668,17 @@
                 setLoading(true);
 
                 const formData = new FormData(e.target);
-                const email = formData.get('email');
-                const password = formData.get('password');
-                const name = formData.get('name');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const name = formData.get('name');
+    const confirmPassword = formData.get('confirmPassword');
+
+    // Check password match for signup
+    if (authMode === 'signup' && password !== confirmPassword) {
+        setError('Passwords do not match');
+        setLoading(false);
+        return;
+    }
 
                 try {
                     let result;
@@ -799,8 +807,11 @@
                                 <input type="email" name="email" placeholder="Email" required />
                             </div>
                             <div className="input-group">
-                                <input type="password" name="password" placeholder="Password" required />
-                            </div>
+    <input type="password" name="password" placeholder="Password" required />
+</div>
+<div className="input-group">
+    <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+</div>
                             {error && <div className="error">{error}</div>}
                             <button type="submit" className="btn btn-primary" disabled={loading}>
                                 {loading ? 'Loading...' : (authMode === 'login' ? 'Login' : 'Sign Up')}
