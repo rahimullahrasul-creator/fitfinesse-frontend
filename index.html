@@ -899,7 +899,6 @@ const sendVerificationCode = async () => {
                         <p className="tagline">Bet on Yourself</p>
                         <div id="recaptcha-container"></div>
 <form className="auth-form" onSubmit={handleAuth}>
-                        <form className="auth-form" onSubmit={handleAuth}>
     {authMode === 'signup' && (
         <div className="input-group">
             <input type="text" name="name" placeholder="Your Name" required />
@@ -969,7 +968,6 @@ const sendVerificationCode = async () => {
 >
         {authMode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Login'}
     </button>
-</form>
                     </div>
                 );
             }
