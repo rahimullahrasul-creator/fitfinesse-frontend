@@ -647,6 +647,8 @@
             const [modalContent, setModalContent] = useState({});
             const [error, setError] = useState('');
             const [loading, setLoading] = useState(false);
+            const [phoneVerificationSent, setPhoneVerificationSent] = useState(false);
+const [confirmationResult, setConfirmationResult] = useState(null);
 
             useEffect(() => {
                 const token = localStorage.getItem('token');
@@ -842,6 +844,17 @@
             Include country code (e.g., +1 for US)
         </small>
     </div>
+                        {authMode === 'signup' && phoneVerificationSent && (
+    <div className="input-group">
+        <input 
+            type="text" 
+            name="verificationCode" 
+            placeholder="Enter 6-digit code" 
+            maxLength="6"
+            required 
+        />
+    </div>
+)}
     <div className="input-group">
         <input type="password" name="password" placeholder="Password" required />
     </div>
