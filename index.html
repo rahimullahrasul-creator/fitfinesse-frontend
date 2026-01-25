@@ -686,7 +686,57 @@ const [confirmationResult, setConfirmationResult] = useState(null);
                     console.error('Failed to load stats:', err);
                 }
             };
-
+const sendVerificationCode = async () => {
+    const phoneInput = document.querySelector('input[name="phone"]');
+    const phone = phoneInput?.value;
+    
+    if (!phone) {
+        setError('Please enter a phone number');
+        return;
+    }
+    
+    // Validate phone format (+country code)
+    if (!phone.match(/^\+[1-9]\d{1,14}$/)) {
+        setError('Phone must include country code (e.g., +12345678900)');
+        return;
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+        // Create reCAPTCHA verifier (Firebase requirement)
+        if (!window.recaptchaVerifier) {
+            window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response) => {
+                    // reCAPTCHA solved
+                }
+            });
+        }
+        
+        // Send SMS verification code
+        const confirmationResult = await window.signInWithPhoneNumber(
+            window.firebaseAuth,
+            phone,
+            window.recaptchaVerifier
+        );
+        
+        setConfirmationResult(confirmationResult);
+        setPhoneVerificationSent(true);
+        setLoading(false);
+    } catch (err) {
+        console.error('Error sending verification code:', err);
+        setError('Failed to send code. Check phone number format.');
+        setLoading(false);
+        
+        // Reset reCAPTCHA on error
+        if (window.recaptchaVerifier) {
+            window.recaptchaVerifier.clear();
+            window.recaptchaVerifier = null;
+        }
+    }
+};
             const handleAuth = async (e) => {
                 e.preventDefault();
                 setError('');
@@ -822,6 +872,8 @@ const [confirmationResult, setConfirmationResult] = useState(null);
                     <div className="auth-screen animate-in">
                         <h1 className="logo">FIT FINESSE</h1>
                         <p className="tagline">Bet on Yourself</p>
+                        <div id="recaptcha-container"></div>
+<form className="auth-form" onSubmit={handleAuth}>
                         <form className="auth-form" onSubmit={handleAuth}>
     {authMode === 'signup' && (
         <div className="input-group">
