@@ -831,19 +831,32 @@ const [confirmationResult, setConfirmationResult] = useState(null);
     <div className="input-group">
         <input type="email" name="email" placeholder="Email" required />
     </div>
-                            {authMode === 'signup' && (
+               {authMode === 'signup' && (
     <div className="input-group">
-        <input 
-            type="tel" 
-            name="phone" 
-            placeholder="Phone Number (e.g., +1234567890)" 
-            pattern="^\+[1-9]\d{1,14}$"
-            required 
-        />
+        <div style={{display: 'flex', gap: '0.5rem'}}>
+            <input 
+                type="tel" 
+                name="phone" 
+                placeholder="Phone Number (e.g., +1234567890)" 
+                pattern="^\+[1-9]\d{1,14}$"
+                required 
+                style={{flex: 1}}
+            />
+            <button 
+                type="button" 
+                className="btn btn-secondary"
+                onClick={sendVerificationCode}
+                disabled={phoneVerificationSent || loading}
+                style={{whiteSpace: 'nowrap'}}
+            >
+                {phoneVerificationSent ? '✓ Code Sent' : 'Send Code'}
+            </button>
+        </div>
         <small style={{color: 'var(--light-gray)', fontSize: '0.85rem', marginTop: '0.25rem'}}>
             Include country code (e.g., +1 for US)
         </small>
     </div>
+)}
                         {authMode === 'signup' && phoneVerificationSent && (
     <div className="input-group">
         <input 
