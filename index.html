@@ -758,7 +758,32 @@ const sendVerificationCode = async () => {
                 try {
                     let result;
                     if (authMode === 'signup') {
-                        result = await api.signup(email, name, password);
+    // Verify phone code first
+    if (!phoneVerificationSent) {
+        setError('Please verify your phone number first');
+        setLoading(false);
+        return;
+    }
+    
+    const verificationCode = formData.get('verificationCode');
+    if (!verificationCode) {
+        setError('Please enter the verification code');
+        setLoading(false);
+        return;
+    }
+    
+    try {
+        // Verify the SMS code with Firebase
+        await confirmationResult.confirm(verificationCode);
+        
+        // Code verified! Now create account in backend
+        const phone = formData.get('phone');
+        result = await api.signup(email, name, password, phone);
+    } catch (err) {
+        setError('Invalid verification code');
+        setLoading(false);
+        return;
+    }
                     } else {
                         result = await api.login(email, password);
                     }
