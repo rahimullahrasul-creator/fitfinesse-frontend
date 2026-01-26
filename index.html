@@ -923,7 +923,7 @@ const sendVerificationCode = async () => {
                 className="btn btn-secondary"
                 onClick={sendVerificationCode}
                 disabled={phoneVerificationSent || loading}
-                style={{whiteSpace: 'nowrap', width: '140px', padding: '15px 15px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: '1', boxSizing: 'border-box'}}
+                style={{whiteSpace: 'nowrap', width: '140px', padding: '15px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 'normal', border: '1px solid #333', borderRadius: '8px', boxSizing: 'border-box'}}
             >
                 {phoneVerificationSent ? '✓ Code Sent' : 'Send Code'}
             </button>
