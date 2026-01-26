@@ -916,14 +916,14 @@ const sendVerificationCode = async () => {
                 placeholder="Phone Number (e.g., +1234567890)" 
                 pattern="^\+[1-9]\d{1,14}$"
                 required 
-                style={{flex: 3}}
+                style={{flex: 1, minWidth: '200px'}}
             />
             <button 
                 type="button" 
                 className="btn btn-secondary"
                 onClick={sendVerificationCode}
                 disabled={phoneVerificationSent || loading}
-                style={{whiteSpace: 'nowrap', flex: '0 0 auto'}}
+                style={{whiteSpace: 'nowrap', width: '140px'}}
             >
                 {phoneVerificationSent ? '✓ Code Sent' : 'Send Code'}
             </button>
