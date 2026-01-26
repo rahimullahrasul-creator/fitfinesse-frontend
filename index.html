@@ -688,9 +688,6 @@ const [confirmationResult, setConfirmationResult] = useState(null);
                 }
             };
 const sendVerificationCode = async () => {
-    const phoneInput = document.querySelector('input[name="phone"]');
-    const phoneValue = phone.replace(/\D/g, '');
-const formattedPhone = '+' + phoneValue;
     
     if (!phone) {
         setError('Please enter a phone number');
