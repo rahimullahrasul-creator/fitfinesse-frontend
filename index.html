@@ -591,12 +591,12 @@
                 return response.json();
             },
 
-            async signup(email, name, password) {
-                return this.request('/auth/signup', {
-                    method: 'POST',
-                    body: JSON.stringify({ email, name, password })
-                });
-            },
+            async signup(email, name, password, phone) {
+    return this.request('/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify({ email, name, password, phone })
+    });
+},
 
             async login(email, password) {
                 return this.request('/auth/login', {
