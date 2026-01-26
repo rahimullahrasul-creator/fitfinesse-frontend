@@ -689,18 +689,21 @@ const [confirmationResult, setConfirmationResult] = useState(null);
             };
 const sendVerificationCode = async () => {
     
-    if (!phone) {
+    if (!phone || phone === '+1 ') {
         setError('Please enter a phone number');
         return;
     }
     
-    // Remove dashes and validate we have digits
-const cleanPhone = phone.replace(/\D/g, '');
-if (cleanPhone.length !== 11) { // Should be 1 + 10 digits for US
-    setError('Please enter a valid 10-digit phone number');
-    return;
-}
-const formattedPhone = '+' + cleanPhone;
+    // Remove all non-digits
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Should have 11 digits total (1 for country code + 10 for number)
+    if (cleanPhone.length < 11) {
+        setError('Please enter a complete 10-digit phone number');
+        return;
+    }
+    
+    const formattedPhone = '+' + cleanPhone;
     
     setLoading(true);
     setError('');
@@ -717,18 +720,19 @@ const formattedPhone = '+' + cleanPhone;
         }
         
         // Send SMS verification code
-       const confirmationResult = await window.signInWithPhoneNumber(
-    window.firebaseAuth,
-    formattedPhone,
-    window.recaptchaVerifier
-);
+        const confirmationResult = await window.signInWithPhoneNumber(
+            window.firebaseAuth,
+            formattedPhone,
+            window.recaptchaVerifier
+        );
         
         setConfirmationResult(confirmationResult);
         setPhoneVerificationSent(true);
         setLoading(false);
     } catch (err) {
         console.error('Error sending verification code:', err);
-        setError('Failed to send code. Check phone number format.');
+        console.error('Phone used:', formattedPhone); // Debug line
+        setError('Failed to send code: ' + err.message);
         setLoading(false);
         
         // Reset reCAPTCHA on error
