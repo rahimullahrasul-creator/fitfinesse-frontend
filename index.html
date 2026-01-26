@@ -923,7 +923,7 @@ const sendVerificationCode = async () => {
                 className="btn btn-secondary"
                 onClick={sendVerificationCode}
                 disabled={phoneVerificationSent || loading}
-                style={{whiteSpace: 'nowrap'}}
+                style={{whiteSpace: 'nowrap', flex: '0 0 auto'}}
             >
                 {phoneVerificationSent ? '✓ Code Sent' : 'Send Code'}
             </button>
