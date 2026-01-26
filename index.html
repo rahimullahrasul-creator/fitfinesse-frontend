@@ -649,6 +649,7 @@
             const [loading, setLoading] = useState(false);
             const [phoneVerificationSent, setPhoneVerificationSent] = useState(false);
 const [confirmationResult, setConfirmationResult] = useState(null);
+            const [phone, setPhone] = useState('+1 ');
 
             useEffect(() => {
                 const token = localStorage.getItem('token');
@@ -688,7 +689,8 @@ const [confirmationResult, setConfirmationResult] = useState(null);
             };
 const sendVerificationCode = async () => {
     const phoneInput = document.querySelector('input[name="phone"]');
-    const phone = phoneInput?.value;
+    const phoneValue = phone.replace(/\D/g, '');
+const formattedPhone = '+' + phoneValue;
     
     if (!phone) {
         setError('Please enter a phone number');
@@ -716,11 +718,11 @@ const sendVerificationCode = async () => {
         }
         
         // Send SMS verification code
-        const confirmationResult = await window.signInWithPhoneNumber(
-            window.firebaseAuth,
-            phone,
-            window.recaptchaVerifier
-        );
+       const confirmationResult = await window.signInWithPhoneNumber(
+    window.firebaseAuth,
+    formattedPhone,
+    window.recaptchaVerifier
+);
         
         setConfirmationResult(confirmationResult);
         setPhoneVerificationSent(true);
@@ -910,14 +912,32 @@ const sendVerificationCode = async () => {
                {authMode === 'signup' && (
     <div className="input-group">
         <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-            <input 
-                type="tel" 
-                name="phone" 
-                placeholder="Phone Number (e.g., +1234567890)" 
-                pattern="^\+[1-9]\d{1,14}$"
-                required 
-                style={{flex: 1, minWidth: '200px', height: '50px', padding: '15px'}}
-            />
+           <input
+  type="tel"
+  name="phone"
+  placeholder="Phone Number"
+  value={phone}
+  onChange={(e) => {
+    let value = e.target.value;
+    if (!value.startsWith('+1 ')) {
+      value = '+1 ';
+    }
+    const digits = value.slice(3).replace(/\D/g, '');
+    let formatted = '+1 ';
+    if (digits.length > 0) {
+      formatted += digits.slice(0, 3);
+    }
+    if (digits.length > 3) {
+      formatted += '-' + digits.slice(3, 6);
+    }
+    if (digits.length > 6) {
+      formatted += '-' + digits.slice(6, 10);
+    }
+    setPhone(formatted);
+  }}
+  required
+  style={{flex: 1, minWidth: '200px', height: '50px', padding: '15px'}}
+/>
             <button 
                 type="button" 
                 className="btn btn-secondary"
