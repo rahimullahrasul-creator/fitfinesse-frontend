@@ -697,11 +697,13 @@ const formattedPhone = '+' + phoneValue;
         return;
     }
     
-    // Validate phone format (+country code)
-    if (!phone.match(/^\+[1-9]\d{1,14}$/)) {
-        setError('Phone must include country code (e.g., +12345678900)');
-        return;
-    }
+    // Remove dashes and validate we have digits
+const cleanPhone = phone.replace(/\D/g, '');
+if (cleanPhone.length !== 11) { // Should be 1 + 10 digits for US
+    setError('Please enter a valid 10-digit phone number');
+    return;
+}
+const formattedPhone = '+' + cleanPhone;
     
     setLoading(true);
     setError('');
