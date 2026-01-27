@@ -706,30 +706,13 @@ const sendVerificationCode = async () => {
     setError('');
     
     try {
-        // Remove old recaptcha container and create new one
-        const oldContainer = document.getElementById('recaptcha-container');
-        if (oldContainer) {
-            oldContainer.remove();
+        // Only create reCAPTCHA if it doesn't exist
+        if (!window.recaptchaVerifier) {
+            window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response) => {}
+            });
         }
-        
-        // Create fresh container
-        const newContainer = document.createElement('div');
-        newContainer.id = 'recaptcha-container';
-        document.body.appendChild(newContainer);
-        
-        // Clear old verifier
-        if (window.recaptchaVerifier) {
-            try {
-                window.recaptchaVerifier.clear();
-            } catch (e) {}
-            window.recaptchaVerifier = null;
-        }
-
-        // Create fresh reCAPTCHA
-        window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
-            'size': 'invisible',
-            'callback': (response) => {}
-        });
         
         const confirmationResult = await window.signInWithPhoneNumber(
             window.firebaseAuth,
@@ -746,6 +729,7 @@ const sendVerificationCode = async () => {
         setError('Failed to send code: ' + err.message);
         setLoading(false);
         
+        // On error, clear the verifier so it can be recreated
         if (window.recaptchaVerifier) {
             try {
                 window.recaptchaVerifier.clear();
