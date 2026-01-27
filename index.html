@@ -708,20 +708,29 @@ const sendVerificationCode = async () => {
     setLoading(true);
     setError('');
     
-    try {
-        // Clear existing reCAPTCHA if any
-if (window.recaptchaVerifier) {
-    window.recaptchaVerifier.clear();
-    window.recaptchaVerifier = null;
-}
-
-// Create fresh reCAPTCHA
-window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
-    'size': 'invisible',
-    'callback': (response) => {
-        // reCAPTCHA solved
+   try {
+    // Completely clear and reset reCAPTCHA container
+    const recaptchaContainer = document.getElementById('recaptcha-container');
+    if (recaptchaContainer) {
+        recaptchaContainer.innerHTML = ''; // Clear the DOM element
     }
-});
+    
+    if (window.recaptchaVerifier) {
+        try {
+            window.recaptchaVerifier.clear();
+        } catch (e) {
+            // Already cleared, ignore
+        }
+        window.recaptchaVerifier = null;
+    }
+
+    // Create fresh reCAPTCHA
+    window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
+        'size': 'invisible',
+        'callback': (response) => {
+            // reCAPTCHA solved
+        }
+    });
         
         // Send SMS verification code
         const confirmationResult = await window.signInWithPhoneNumber(
