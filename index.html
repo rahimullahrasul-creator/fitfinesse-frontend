@@ -759,7 +759,18 @@ const sendVerificationCode = async () => {
         setLoading(false);
         return;
     }
-
+// Password strength validation
+    if (password.length < 8) {
+        setError('Password must be at least 8 characters');
+        setLoading(false);
+        return;
+    }
+    
+    if (!/\d/.test(password)) {
+        setError('Password must contain at least one number');
+        setLoading(false);
+        return;
+    }
                 try {
                     let result;
                     if (authMode === 'signup') {
