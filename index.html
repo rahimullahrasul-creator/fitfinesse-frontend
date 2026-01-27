@@ -975,6 +975,47 @@ const sendVerificationCode = async () => {
             <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
         </div>
     )}
+    {authMode === 'signup' && (
+    <div className="input-group">
+        <label style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '0.5rem',
+            fontSize: '0.85rem',
+            color: 'var(--light-gray)',
+            cursor: 'pointer',
+            textAlign: 'left',
+            fontWeight: 'normal',
+            textTransform: 'none',
+            letterSpacing: 'normal',
+            marginBottom: '0'
+        }}>
+            <input 
+                type="checkbox" 
+                name="termsAccepted" 
+                required
+                style={{
+                    marginTop: '0.25rem',
+                    cursor: 'pointer',
+                    width: '16px',
+                    height: '16px',
+                    flexShrink: 0
+                }}
+            />
+            <span>
+                I am 18 years or older and agree to the{' '}
+                <a 
+                    href="terms.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{color: 'var(--electric-orange)', textDecoration: 'underline'}}
+                >
+                    Terms & Conditions
+                </a>
+            </span>
+        </label>
+    </div>
+)}
     {error && <div className="error">{error}</div>}
     <button type="submit" className="btn btn-primary" disabled={loading}>
         {loading ? 'Loading...' : (authMode === 'login' ? 'Login' : 'Sign Up')}
