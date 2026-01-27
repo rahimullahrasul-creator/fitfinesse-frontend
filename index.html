@@ -688,16 +688,13 @@ const [confirmationResult, setConfirmationResult] = useState(null);
                 }
             };
 const sendVerificationCode = async () => {
-    
     if (!phone || phone === '+1 ') {
         setError('Please enter a phone number');
         return;
     }
     
-    // Remove all non-digits
     const cleanPhone = phone.replace(/\D/g, '');
     
-    // Should have 11 digits total (1 for country code + 10 for number)
     if (cleanPhone.length < 11) {
         setError('Please enter a complete 10-digit phone number');
         return;
@@ -708,31 +705,32 @@ const sendVerificationCode = async () => {
     setLoading(true);
     setError('');
     
-   try {
-    // Completely clear and reset reCAPTCHA container
-    const recaptchaContainer = document.getElementById('recaptcha-container');
-    if (recaptchaContainer) {
-        recaptchaContainer.innerHTML = ''; // Clear the DOM element
-    }
-    
-    if (window.recaptchaVerifier) {
-        try {
-            window.recaptchaVerifier.clear();
-        } catch (e) {
-            // Already cleared, ignore
+    try {
+        // Remove old recaptcha container and create new one
+        const oldContainer = document.getElementById('recaptcha-container');
+        if (oldContainer) {
+            oldContainer.remove();
         }
-        window.recaptchaVerifier = null;
-    }
-
-    // Create fresh reCAPTCHA
-    window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
-        'size': 'invisible',
-        'callback': (response) => {
-            // reCAPTCHA solved
-        }
-    });
         
-        // Send SMS verification code
+        // Create fresh container
+        const newContainer = document.createElement('div');
+        newContainer.id = 'recaptcha-container';
+        document.body.appendChild(newContainer);
+        
+        // Clear old verifier
+        if (window.recaptchaVerifier) {
+            try {
+                window.recaptchaVerifier.clear();
+            } catch (e) {}
+            window.recaptchaVerifier = null;
+        }
+
+        // Create fresh reCAPTCHA
+        window.recaptchaVerifier = new window.RecaptchaVerifier(window.firebaseAuth, 'recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {}
+        });
+        
         const confirmationResult = await window.signInWithPhoneNumber(
             window.firebaseAuth,
             formattedPhone,
@@ -744,13 +742,14 @@ const sendVerificationCode = async () => {
         setLoading(false);
     } catch (err) {
         console.error('Error sending verification code:', err);
-        console.error('Phone used:', formattedPhone); // Debug line
+        console.error('Phone used:', formattedPhone);
         setError('Failed to send code: ' + err.message);
         setLoading(false);
         
-        // Reset reCAPTCHA on error
         if (window.recaptchaVerifier) {
-            window.recaptchaVerifier.clear();
+            try {
+                window.recaptchaVerifier.clear();
+            } catch (e) {}
             window.recaptchaVerifier = null;
         }
     }
