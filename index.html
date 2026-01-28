@@ -642,9 +642,20 @@
             },
 
             async getStats() {
-                return this.request('/stats');
-            }
-        };
+    return this.request('/stats');
+},
+
+async acceptPool(poolId) {
+    return this.request(`/pools/${poolId}/accept`, {
+        method: 'POST'
+    });
+},
+
+async rejectPool(poolId) {
+    return this.request(`/pools/${poolId}/reject`, {
+        method: 'POST'
+    });
+}
 
         function App() {
             const [currentScreen, setCurrentScreen] = useState('auth');
@@ -1075,14 +1086,82 @@ const sendVerificationCode = async () => {
 
                     <div className="main-content">
                         {activeNav === 'pools' && (
-                            <>
-                                {pools.length === 0 ? (
-                                    <div className="empty-state">
-                                        <div className="empty-state-icon">🏋️</div>
-                                        <h2>No Active Pools</h2>
-                                        <p>Create your first pool and start winning!</p>
-                                    </div>
-                                ) : (
+    <>
+        {pools.filter(p => p.your_status === 'pending').length > 0 && (
+            <div className="form-section animate-in" style={{marginBottom: '2rem'}}>
+                <h3 style={{marginBottom: '1rem'}}>Pending Invitations</h3>
+                {pools.filter(p => p.your_status === 'pending').map(pool => (
+                    <div key={pool.id} style={{
+                        background: 'var(--mid-gray)',
+                        padding: '1rem',
+                        borderRadius: '8px',
+                        marginBottom: '1rem',
+                        border: '2px solid var(--electric-orange)'
+                    }}>
+                        <div style={{marginBottom: '1rem'}}>
+                            <div style={{fontFamily: 'Bebas Neue', fontSize: '1.3rem'}}>{pool.name}</div>
+                            <div style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>
+                                ${pool.stake} stake • {pool.weekly_goal} days/week
+                            </div>
+                        </div>
+                        <div style={{display: 'flex', gap: '0.5rem'}}>
+                            <button 
+                                className="btn btn-primary"
+                                onClick={async () => {
+                                    try {
+                                        await api.acceptPool(pool.id);
+                                        setModalContent({
+                                            icon: '✅',
+                                            title: 'Invitation Accepted!',
+                                            message: 'You\'re in! Time to hit the gym.'
+                                        });
+                                        setShowModal(true);
+                                        loadPools();
+                                        setTimeout(() => setShowModal(false), 2000);
+                                    } catch (err) {
+                                        setError(err.message);
+                                    }
+                                }}
+                                style={{flex: 1}}
+                            >
+                                Accept
+                            </button>
+                            <button 
+                                className="btn btn-secondary"
+                                onClick={async () => {
+                                    try {
+                                        await api.rejectPool(pool.id);
+                                        setModalContent({
+                                            icon: '👋',
+                                            title: 'Invitation Declined',
+                                            message: 'Pool invitation removed.'
+                                        });
+                                        setShowModal(true);
+                                        loadPools();
+                                        setTimeout(() => setShowModal(false), 2000);
+                                    } catch (err) {
+                                        setError(err.message);
+                                    }
+                                }}
+                                style={{flex: 1}}
+                            >
+                                Decline
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )}
+        
+        {pools.filter(p => p.your_status === 'active').length === 0 ? (
+            <div className="empty-state">
+                <div className="empty-state-icon">🏋️</div>
+                <h2>No Active Pools</h2>
+                <p>Create your first pool and start winning!</p>
+            </div>
+        ) : (
+            pools.filter(p => p.your_status === 'active').map(pool => (
+                <div key={pool.id} className="pool-card animate-in">
                                     pools.map(pool => (
                                         <div key={pool.id} className="pool-card animate-in">
                                             <div className="pool-header">
