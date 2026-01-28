@@ -535,19 +535,21 @@
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             opacity: 1;
-            height: 40px;
-            background: linear-gradient(to bottom, #FF6B35 50%, #4CAF50 50%);
+            width: 30px;
+            height: 50px;
             cursor: pointer;
+            background: var(--mid-gray);
+            border-left: 2px solid var(--electric-orange);
         }
 
         input[type="number"]::-webkit-inner-spin-button:hover,
         input[type="number"]::-webkit-outer-spin-button:hover {
-            background: linear-gradient(to bottom, #FF8555 50%, #66BB6A 50%);
+            background: rgba(255, 69, 0, 0.2);
         }
 
-        /* For Firefox */
+        /* For Firefox - show custom styling */
         input[type="number"] {
-            -moz-appearance: textfield;
+            -moz-appearance: auto;
     </style>
     <!-- Firebase SDK -->
 <script type="module">
@@ -1149,7 +1151,7 @@ const sendVerificationCode = async () => {
                                 <input type="text" name="poolName" placeholder="e.g., Morning Grind" required />
 
                                 <label>Weekly Gym Goal</label>
-                                <input type="number" name="weeklyGoal" min="1" max="7" placeholder="3" required />
+                                <input type="number" name="weeklyGoal" min="1" max="5" placeholder="3" required />
 
                                 <label>Your Stake ($)</label>
                                 <input type="number" name="stake" min="5" max="100" step="1" placeholder="20" required />
