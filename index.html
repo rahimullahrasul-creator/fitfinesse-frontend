@@ -530,7 +530,20 @@
             padding: 3rem;
             color: var(--light-gray);
         }
+        /* Custom number input arrows - simple gray */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+            cursor: pointer;
+        }
 
+        input[type="number"]::-webkit-inner-spin-button {
+            background: transparent;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button {
+            background: transparent;
+        }
     </style>
     <!-- Firebase SDK -->
 <script type="module">
