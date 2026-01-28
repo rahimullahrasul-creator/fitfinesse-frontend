@@ -1152,19 +1152,19 @@ const sendVerificationCode = async () => {
                     step="1"
                     placeholder="20"
                     required
-                    oninput="
-                        const val = parseFloat(this.value);
-                        if (val >= 5 && val <= 100) { 
-                            this.style.borderColor = '#00ff41'; 
-                            this.style.color = '#00ff41';
-                            this.style.boxShadow = '0 0 10px rgba(0, 255, 65, 0.5)';
-                        } else { 
-                            this.style.borderColor = '#2a2a2a'; 
-                            this.style.color = '#ffffff';
-                            this.style.boxShadow = 'none';
-                        }
-                    "
-                />
+                    onChange={(e) => {
+                                        const val = parseFloat(e.target.value);
+                                        if (val >= 5 && val <= 100) {
+                                            e.target.style.borderColor = '#00ff41';
+                                            e.target.style.color = '#00ff41';
+                                            e.target.style.boxShadow = '0 0 10px rgba(0, 255, 65, 0.5)';
+                                        } else {
+                                            e.target.style.borderColor = '#2a2a2a';
+                                            e.target.style.color = '#ffffff';
+                                            e.target.style.boxShadow = 'none';
+                                        }
+                                    }}
+                                />
 
                                 <label>Invite Friends (comma separated emails)</label>
                                 <input type="text" name="members" placeholder="friend@email.com, buddy@email.com" required />
