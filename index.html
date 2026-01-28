@@ -1148,7 +1148,16 @@ const sendVerificationCode = async () => {
                                 <input type="number" name="weeklyGoal" min="1" max="5" placeholder="3" required />
 
                                 <label>Your Stake ($)</label>
-                                <input type="number" name="stake" min="5" max="100" step="1" placeholder="20" required />
+                                <input 
+    type="number" 
+    name="stake" 
+    min="5" 
+    max="100" 
+    step="1" 
+    placeholder="20" 
+    required 
+    onInput="if (this.value >= 5 && this.value <= 100) { this.style.borderColor = 'var(--neon-green)'; this.style.color = 'var(--neon-green)'; } else { this.style.borderColor = 'var(--mid-gray)'; this.style.color = 'var(--white)'; }"
+/>
 
                                 <label>Invite Friends (comma separated emails)</label>
                                 <input type="text" name="members" placeholder="friend@email.com, buddy@email.com" required />
