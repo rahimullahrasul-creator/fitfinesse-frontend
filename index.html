@@ -846,22 +846,31 @@ const sendVerificationCode = async () => {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(
                             async (position) => {
-                                await api.checkIn(
-                                    poolId,
-                                    position.coords.latitude,
-                                    position.coords.longitude
-                                );
-
-                                setModalContent({
-                                    icon: '✅',
-                                    title: 'Check-in Successful!',
-                                    message: 'Your gym visit has been verified. Keep crushing it!'
-                                });
-                                setShowModal(true);
-                                loadPools();
-
-                                setTimeout(() => setShowModal(false), 2000);
-                            },
+                    try {
+                        await api.checkIn(
+                            poolId,
+                            position.coords.latitude,
+                            position.coords.longitude
+                        );
+                        
+                        setModalContent({
+                            icon: '✅',
+                            title: 'Check-in Successful!',
+                            message: 'Your gym visit has been verified. Keep crushing it!'
+                        });
+                        setShowModal(true);
+                        loadPools();
+                        setTimeout(() => setShowModal(false), 2000);
+                    } catch (err) {
+                        setModalContent({
+                            icon: '❌',
+                            title: 'Check-in Failed',
+                            message: err.message || 'Unable to check in. Try again.'
+                        });
+                        setShowModal(true);
+                        setTimeout(() => setShowModal(false), 3000);
+                    }
+                },
                             (error) => {
                                 setModalContent({
                                     icon: '⚠️',
