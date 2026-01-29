@@ -1217,7 +1217,34 @@ const sendVerificationCode = async () => {
                                             >
                                                 {pool.your_checkins >= pool.weekly_goal ? 'Goal Complete! 🎉' : 'Check In Now'}
                                             </button>
-                                        </div>
+
+{pool.creator_id === user?.id && pool.members.length < 2 && (
+    <button 
+        className="btn btn-secondary"
+        onClick={async () => {
+            if (window.confirm('Are you sure you want to cancel this pool? This cannot be undone.')) {
+                try {
+                    await api.cancelPool(pool.id);
+                    setModalContent({
+                        icon: '🗑️',
+                        title: 'Pool Cancelled',
+                        message: 'Pool has been deleted.'
+                    });
+                    setShowModal(true);
+                    loadPools();
+                    setTimeout(() => setShowModal(false), 2000);
+                } catch (err) {
+                    setError(err.message);
+                }
+            }
+        }}
+        style={{marginTop: '1rem'}}
+    >
+        Cancel Pool
+    </button>
+)}
+
+</div>
                                     ))
                                 )}
                             </>
