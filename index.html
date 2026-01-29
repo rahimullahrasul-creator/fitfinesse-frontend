@@ -658,12 +658,6 @@ async rejectPool(poolId) {
 }
 };
 
-async rejectPool(poolId) {
-    return this.request(`/pools/${poolId}/reject`, {
-        method: 'POST'
-    });
-},
-
 async cancelPool(poolId) {
     return this.request(`/pools/${poolId}`, {
         method: 'DELETE'
