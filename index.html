@@ -1179,13 +1179,19 @@ const sendVerificationCode = async () => {
             pools.filter(p => p.your_status === 'active').map(pool => (
                 <div key={pool.id} className="pool-card animate-in">
                                             <div className="pool-header">
-    <div style={{display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '0.25rem'}}>
+    <div>
         <div className="pool-name">{pool.name}</div>
-        <div style={{fontSize: '0.8rem', color: 'var(--light-gray)', whiteSpace: 'nowrap'}}>
+        <div style={{fontSize: '0.75rem', color: 'var(--light-gray)', marginTop: '0.25rem'}}>
             {(() => {
                 const start = new Date(pool.week_start);
                 const end = new Date(pool.week_end);
-                return `Week of ${start.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}-${end.getDate()}`;
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                    return 'Loading dates...';
+                }
+                const startMonth = start.toLocaleDateString('en-US', {month: 'short'});
+                const startDay = start.getDate();
+                const endDay = end.getDate();
+                return `Week of ${startMonth} ${startDay}-${endDay}`;
             })()}
         </div>
     </div>
