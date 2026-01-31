@@ -1232,12 +1232,23 @@ const sendVerificationCode = async () => {
                                             </div>
 
                                             <button 
-                                                className="checkin-btn" 
-                                                onClick={() => handleCheckIn(pool.id)}
-                                                disabled={pool.your_checkins >= pool.weekly_goal}
-                                            >
-                                                {pool.your_checkins >= pool.weekly_goal ? 'Goal Complete! 🎉' : 'Check In Now'}
-                                            </button>
+    className="checkin-btn" 
+    onClick={() => handleCheckIn(pool.id)}
+    disabled={pool.your_checkins >= pool.weekly_goal || pool.checked_in_today}
+    style={{
+        background: pool.checked_in_today && pool.your_checkins < pool.weekly_goal 
+            ? 'var(--mid-gray)' 
+            : pool.your_checkins >= pool.weekly_goal 
+            ? 'var(--electric-green)' 
+            : 'var(--electric-green)'
+    }}
+>
+    {pool.your_checkins >= pool.weekly_goal 
+        ? 'Goal Complete! 🎉' 
+        : pool.checked_in_today 
+        ? '✓ Checked In Today' 
+        : 'Check In Now'}
+</button>
 
 {pool.creator_id === user?.id && pool.members.length < 2 && (
     <button 
