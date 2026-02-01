@@ -1127,50 +1127,70 @@ const sendVerificationCode = async () => {
         ${pool.stake} stake • {pool.weekly_goal} days/week
     </div>
 </div>
-                        <div style={{display: 'flex', gap: '0.5rem'}}>
-                            <button 
-                                className="btn btn-primary"
-                                onClick={async () => {
-                                    try {
-                                        await api.acceptPool(pool.id);
-                                        setModalContent({
-                                            icon: '✅',
-                                            title: 'Invitation Accepted!',
-                                            message: 'You\'re in! Time to hit the gym.'
-                                        });
-                                        setShowModal(true);
-                                        loadPools();
-                                        setTimeout(() => setShowModal(false), 2000);
-                                    } catch (err) {
-                                        setError(err.message);
-                                    }
-                                }}
-                                style={{flex: 1}}
-                            >
-                                Accept
-                            </button>
-                            <button 
-                                className="btn btn-secondary"
-                                onClick={async () => {
-                                    try {
-                                        await api.rejectPool(pool.id);
-                                        setModalContent({
-                                            icon: '👋',
-                                            title: 'Invitation Declined',
-                                            message: 'Pool invitation removed.'
-                                        });
-                                        setShowModal(true);
-                                        loadPools();
-                                        setTimeout(() => setShowModal(false), 2000);
-                                    } catch (err) {
-                                        setError(err.message);
-                                    }
-                                }}
-                                style={{flex: 1}}
-                            >
-                                Decline
-                            </button>
-                        </div>
+                        
+                        {pools.filter(p => p.your_status === 'active').length >= 5 && (
+    <div style={{
+        background: 'rgba(255, 107, 53, 0.2)',
+        padding: '0.75rem',
+        borderRadius: '6px',
+        marginBottom: '0.75rem',
+        fontSize: '0.85rem',
+        color: 'var(--electric-orange)',
+        border: '1px solid var(--electric-orange)'
+    }}>
+        ⚠️ You have 5 active pools. Complete a pool before accepting new invitations.
+    </div>
+)}
+
+<div style={{display: 'flex', gap: '0.5rem'}}>
+    <button 
+        className="btn btn-primary"
+        onClick={async () => {
+            try {
+                await api.acceptPool(pool.id);
+                setModalContent({
+                    icon: '✅',
+                    title: 'Invitation Accepted!',
+                    message: 'You\'re in! Time to hit the gym.'
+                });
+                setShowModal(true);
+                loadPools();
+                setTimeout(() => setShowModal(false), 2000);
+            } catch (err) {
+                setError(err.message);
+            }
+        }}
+        disabled={pools.filter(p => p.your_status === 'active').length >= 5}
+        style={{
+            flex: 1,
+            opacity: pools.filter(p => p.your_status === 'active').length >= 5 ? 0.5 : 1,
+            cursor: pools.filter(p => p.your_status === 'active').length >= 5 ? 'not-allowed' : 'pointer'
+        }}
+    >
+        Accept
+    </button>
+    <button 
+        className="btn btn-secondary"
+        onClick={async () => {
+            try {
+                await api.rejectPool(pool.id);
+                setModalContent({
+                    icon: '👋',
+                    title: 'Invitation Declined',
+                    message: 'Pool invitation removed.'
+                });
+                setShowModal(true);
+                loadPools();
+                setTimeout(() => setShowModal(false), 2000);
+            } catch (err) {
+                setError(err.message);
+            }
+        }}
+        style={{flex: 1}}
+    >
+        Decline
+    </button>
+</div>
                     </div>
                 ))}
             </div>
