@@ -1236,12 +1236,13 @@ const sendVerificationCode = async () => {
     onClick={() => handleCheckIn(pool.id)}
     disabled={pool.your_checkins >= pool.weekly_goal || pool.checked_in_today}
     style={{
-        background: pool.checked_in_today && pool.your_checkins < pool.weekly_goal 
-            ? 'var(--mid-gray)' 
-            : pool.your_checkins >= pool.weekly_goal 
-            ? 'var(--electric-green)' 
-            : 'var(--electric-green)'
-    }}
+    background: pool.checked_in_today && pool.your_checkins < pool.weekly_goal 
+        ? 'var(--mid-gray)' 
+        : 'var(--electric-green)',
+    cursor: pool.checked_in_today || pool.your_checkins >= pool.weekly_goal 
+        ? 'not-allowed' 
+        : 'pointer'
+}}
 >
     {pool.your_checkins >= pool.weekly_goal 
         ? 'Goal Complete! 🎉' 
