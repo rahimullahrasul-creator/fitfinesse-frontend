@@ -1326,24 +1326,24 @@ const sendVerificationCode = async () => {
 }}>
     <div>ⓘ Pools start next Monday and run for one week</div>
     <div style={{
-        marginTop: '0.75rem', 
-        paddingTop: '0.75rem', 
-        borderTop: '1px solid rgba(255,255,255,0.1)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    }}>
-        <span>Active pools:</span>
-        <span style={{
+    marginTop: '0.75rem', 
+    paddingTop: '0.75rem', 
+    borderTop: '1px solid rgba(255,255,255,0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.25rem'
+}}>
+    <span>Active pools:</span>
+    <span style={{
             fontFamily: 'Bebas Neue',
             fontSize: '1.2rem',
             color: pools.filter(p => p.your_status === 'active').length >= 5 
                 ? 'var(--electric-orange)' 
                 : 'var(--neon-green)'
         }}>
-            {pools.filter(p => p.your_status === 'active').length}/5
-        </span>
-    </div>
+        {pools.filter(p => p.your_status === 'active').length}/5
+    </span>
+</div>
 </div>
                                 
                                 <label>Pool Name</label>
