@@ -1313,15 +1313,34 @@ const sendVerificationCode = async () => {
         <h3>Create New Pool</h3>
         
         <div style={{
-            background: 'var(--mid-gray)', 
-            padding: '1rem', 
-            borderRadius: '8px', 
-            marginBottom: '1.5rem',
-            color: 'var(--light-gray)',
-            fontSize: '0.9rem'
+    background: 'var(--mid-gray)', 
+    padding: '1rem', 
+    borderRadius: '8px', 
+    marginBottom: '1.5rem',
+    color: 'var(--light-gray)',
+    fontSize: '0.9rem'
+}}>
+    <div>ℹ️ Pools start next Monday and run for one week</div>
+    <div style={{
+        marginTop: '0.75rem', 
+        paddingTop: '0.75rem', 
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    }}>
+        <span>Active pools:</span>
+        <span style={{
+            fontFamily: 'Bebas Neue',
+            fontSize: '1.2rem',
+            color: pools.filter(p => p.your_status === 'active').length >= 5 
+                ? 'var(--electric-orange)' 
+                : 'var(--neon-green)'
         }}>
-            🛈 Pools start every Monday and run for one week
-        </div>
+            {pools.filter(p => p.your_status === 'active').length}/5
+        </span>
+    </div>
+</div>
                                 
                                 <label>Pool Name</label>
                                 <input type="text" name="poolName" placeholder="e.g., Morning Grind" required />
