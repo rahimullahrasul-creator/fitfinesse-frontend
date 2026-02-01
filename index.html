@@ -1136,9 +1136,13 @@ const sendVerificationCode = async () => {
         marginBottom: '0.75rem',
         fontSize: '0.85rem',
         color: 'var(--electric-orange)',
-        border: '1px solid var(--electric-orange)'
+        border: '1px solid var(--electric-orange)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem'
     }}>
-        ⚠️ You have 5 active pools.
+        <span>⚠️</span>
+        <span>You have 5 active pools.</span>
     </div>
 )}
 
