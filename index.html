@@ -385,6 +385,10 @@
             color: var(--light-gray);
         }
 
+        .checkin-btn.checked-in-today {
+            background: var(--mid-gray) !important;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1232,17 +1236,14 @@ const sendVerificationCode = async () => {
                                             </div>
 
                                             <button 
-    className="checkin-btn" 
+    className={`checkin-btn ${pool.checked_in_today && pool.your_checkins < pool.weekly_goal ? 'checked-in-today' : ''}`}
     onClick={() => handleCheckIn(pool.id)}
     disabled={pool.your_checkins >= pool.weekly_goal || pool.checked_in_today}
     style={{
-    background: pool.checked_in_today && pool.your_checkins < pool.weekly_goal 
-        ? 'var(--mid-gray)' 
-        : 'var(--electric-green)',
-    cursor: pool.checked_in_today || pool.your_checkins >= pool.weekly_goal 
-        ? 'not-allowed' 
-        : 'pointer'
-}}
+        cursor: pool.checked_in_today || pool.your_checkins >= pool.weekly_goal 
+            ? 'not-allowed' 
+            : 'pointer'
+    }}
 >
     {pool.your_checkins >= pool.weekly_goal 
         ? 'Goal Complete! 🎉' 
