@@ -634,6 +634,10 @@
                 });
             },
 
+            getHistory: async () => {
+                 return api.request('/pools/history');
+            },
+
             async checkIn(poolId, lat, lng) {
                 return this.request('/checkins', {
                     method: 'POST',
@@ -1542,14 +1546,12 @@ const sendVerificationCode = async () => {
                         >
                             Stats
                         </div>
+                        <div
+                            className={`nav-item ${activeNav === 'history' ? 'active' : ''}`}
+                            onClick={() => setActiveNav('history')}
+                        >
+                            <span>History</span>
                         </div>
-                <div
-                    className={`nav-item ${activeNav === 'history' ? 'active' : ''}`}
-                    onClick={() => setActiveNav('history')}
-                >
-                    <span>🏆</span>
-                    <span>History</span>
-                </div>
             
                     
                     {showModal && (
