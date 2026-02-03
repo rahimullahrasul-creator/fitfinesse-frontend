@@ -673,6 +673,7 @@ async cancelPool(poolId) {
             const [authMode, setAuthMode] = useState('login');
             const [user, setUser] = useState(null);
             const [pools, setPools] = useState([]);
+            const [historyPools, setHistoryPools] = useState([]);
             const [stats, setStats] = useState(null);
             const [activeNav, setActiveNav] = useState('pools');
             const [showModal, setShowModal] = useState(false);
@@ -706,6 +707,10 @@ const [confirmationResult, setConfirmationResult] = useState(null);
                 try {
                     const poolsData = await api.getPools();
                     setPools(poolsData);
+
+                    // Load history too
+                    const historyData = await api.getHistory();
+                    setHistoryPools(historyData);
                 } catch (err) {
                     console.error('Failed to load pools:', err);
                 }
@@ -1412,6 +1417,112 @@ const sendVerificationCode = async () => {
                                 </div>
                             </>
                         )}
+
+                        </>
+            )}
+
+            {activeNav === 'history' && (
+                <div className="history-container">
+                    <h2 style={{fontFamily: 'Bebas Neue', fontSize: '2rem', marginBottom: '1.5rem'}}>
+                        POOL HISTORY
+                    </h2>
+                    
+                    {historyPools.length === 0 ? (
+                        <div style={{
+                            textAlign: 'center',
+                            padding: '3rem 1rem',
+                            color: 'var(--light-gray)'
+                        }}>
+                            <div style={{fontSize: '4rem', marginBottom: '1rem'}}>🏆</div>
+                            <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '0.5rem'}}>
+                                NO HISTORY YET
+                            </h3>
+                            <p>Complete your first pool to see your wins and losses here</p>
+                        </div>
+                    ) : (
+                        <div>
+                            {historyPools.map(pool => (
+                                <div 
+                                    key={pool.id} 
+                                    className="pool-card"
+                                    style={{
+                                        border: pool.outcome === 'won' 
+                                            ? '2px solid var(--neon-green)' 
+                                            : pool.outcome === 'lost'
+                                            ? '2px solid var(--electric-orange)'
+                                            : '2px solid var(--mid-gray)',
+                                        opacity: 0.9
+                                    }}
+                                >
+                                    <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
+                                        <div>
+                                            <div style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem'}}>
+                                                {pool.outcome === 'won' ? '🏆' : pool.outcome === 'lost' ? '😔' : '🤝'} {pool.name}
+                                            </div>
+                                            <div style={{color: 'var(--light-gray)', fontSize: '0.85rem'}}>
+                                                Week of {new Date(pool.week_start).toLocaleDateString('en-US', {month: 'short', day: 'numeric'})} - {new Date(pool.week_end).getDate()}
+                                            </div>
+                                        </div>
+                                        <div style={{
+                                            fontFamily: 'Bebas Neue',
+                                            fontSize: '1.8rem',
+                                            color: pool.payout > 0 
+                                                ? 'var(--neon-green)' 
+                                                : pool.payout < 0 
+                                                ? 'var(--electric-orange)'
+                                                : 'var(--light-gray)'
+                                        }}>
+                                            {pool.payout > 0 ? '+' : ''}{pool.payout === 0 ? '$0' : `$${pool.payout.toFixed(2)}`}
+                                        </div>
+                                    </div>
+                                    
+                                    <div style={{
+                                        background: 'var(--dark-gray)',
+                                        padding: '1rem',
+                                        borderRadius: '8px',
+                                        marginBottom: '1rem'
+                                    }}>
+                                        <div style={{marginBottom: '0.5rem'}}>
+                                            <span style={{color: 'var(--light-gray)'}}>Your Result: </span>
+                                            <span style={{
+                                                fontWeight: '600',
+                                                color: pool.outcome === 'won' 
+                                                    ? 'var(--neon-green)' 
+                                                    : pool.outcome === 'lost'
+                                                    ? 'var(--electric-orange)'
+                                                    : 'var(--light-gray)'
+                                            }}>
+                                                {pool.outcome === 'won' ? 'WON' : pool.outcome === 'lost' ? 'LOST' : 'TIED'}
+                                            </span>
+                                        </div>
+                                        <div style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>
+                                            Goal: {pool.your_checkins}/{pool.weekly_goal} days {pool.your_checkins >= pool.weekly_goal ? '✅' : '❌'}
+                                        </div>
+                                    </div>
+                                    
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        color: 'var(--light-gray)',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        <div>Pot: ${pool.total_pot}</div>
+                                        <div>{pool.winners} {pool.winners === 1 ? 'winner' : 'winners'}, {pool.losers} {pool.losers === 1 ? 'loser' : 'losers'}</div>
+                                    </div>
+                                    
+                                    <div style={{
+                                        marginTop: '0.5rem',
+                                        color: 'var(--light-gray)',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        Members: {pool.members.join(', ')}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
                     </div>
 
                     <div className="nav">
@@ -1433,7 +1544,16 @@ const sendVerificationCode = async () => {
                         >
                             Stats
                         </div>
-                    </div>
+                        </div>
+                <div
+                    className={`nav-item ${activeNav === 'history' ? 'active' : ''}`}
+                    onClick={() => setActiveNav('history')}
+                >
+                    <span>🏆</span>
+                    <span>History</span>
+                </div>
+            </div>
+                    
 
                     {showModal && (
                         <div className="modal">
@@ -1447,6 +1567,7 @@ const sendVerificationCode = async () => {
                 </div>
             );
         }
+
 
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
