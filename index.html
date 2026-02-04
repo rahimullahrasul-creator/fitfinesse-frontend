@@ -1459,7 +1459,7 @@ const sendVerificationCode = async () => {
                                     <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
                                         <div>
                                             <div style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem'}}>
-                                                {pool.outcome === 'won' ? '🏆' : pool.outcome === 'lost' ? '😔' : '🤝'} {pool.name}
+                                                {pool.outcome === 'won' ? '🏆 ' : ''}{pool.name}
                                             </div>
                                             <div style={{color: 'var(--light-gray)', fontSize: '0.85rem'}}>
                                                 Week of {(() => {
