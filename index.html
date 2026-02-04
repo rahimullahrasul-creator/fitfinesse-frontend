@@ -1462,7 +1462,16 @@ const sendVerificationCode = async () => {
                                                 {pool.outcome === 'won' ? '🏆' : pool.outcome === 'lost' ? '😔' : '🤝'} {pool.name}
                                             </div>
                                             <div style={{color: 'var(--light-gray)', fontSize: '0.85rem'}}>
-                                                Week of {new Date(pool.week_start).toLocaleDateString('en-US', {month: 'short', day: 'numeric'})} - {new Date(pool.week_end).getDate()}
+                                                Week of {(() => {
+    const [startYear, startMonth, startDay] = pool.week_start.split('-').map(Number);
+    const [endYear, endMonth, endDay] = pool.week_end.split('-').map(Number);
+    
+    const start = new Date(startYear, startMonth - 1, startDay);
+    const end = new Date(endYear, endMonth - 1, endDay);
+    
+    const monthName = start.toLocaleDateString('en-US', {month: 'short'});
+    return `${monthName} ${start.getDate()} - ${end.getDate()}`;
+})()}
                                             </div>
                                         </div>
                                         <div style={{
