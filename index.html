@@ -544,6 +544,150 @@
         input[type="number"] {
             -moz-appearance: textfield;
         }
+
+/* Hamburger Button */
+.hamburger-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 100;
+    line-height: 1;
+}
+
+.hamburger-btn:hover {
+    opacity: 0.7;
+}
+
+/* Menu Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-in;
+}
+
+/* Menu Container */
+.menu-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85vw;
+    background: var(--card-bg);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    animation: slideInRight 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Menu Header */
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+}
+
+.menu-close-btn:hover {
+    opacity: 0.7;
+}
+
+/* Menu Content */
+.menu-content {
+    flex: 1;
+    padding: 1rem;
+}
+
+/* Menu Profile */
+.menu-profile {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: var(--dark-gray);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+/* Menu Divider */
+.menu-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 1rem 0;
+}
+
+/* Menu Items */
+.menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.menu-item:hover {
+    background: var(--dark-gray);
+}
+
+.menu-item span:first-child {
+    font-size: 1.3rem;
+    width: 1.5rem;
+    text-align: center;
+}
+
+.menu-logout {
+    color: var(--electric-orange);
+    margin-top: 0.5rem;
+}
+
+/* Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+        
     </style>
     <!-- Firebase SDK -->
 <script type="module">
@@ -681,6 +825,7 @@ async cancelPool(poolId) {
             const [stats, setStats] = useState(null);
             const [activeNav, setActiveNav] = useState('pools');
             const [showModal, setShowModal] = useState(false);
+            const [showMenu, setShowMenu] = useState(false);
             const [modalContent, setModalContent] = useState({});
             const [error, setError] = useState('');
             const [loading, setLoading] = useState(false);
@@ -1110,7 +1255,14 @@ const sendVerificationCode = async () => {
                 <div className="container">
                     <div className="header">
                         <h1>FIT FINESSE</h1>
-                        <p style={{fontSize: '1.2rem', fontWeight: '500'}}>Consistency wins, {user?.name}.</p>
+                        <p style={{fontSize: '1.1rem'}}>Hey {user?.name}, keep grinding 💪</p>
+                        <button 
+                            className="hamburger-btn"
+                            onClick={() => setShowMenu(true)}
+                            aria-label="Open menu"
+                        >
+                            ☰
+                        </button>
                     </div>
 
                     <div className="main-content">
@@ -1580,11 +1732,68 @@ const sendVerificationCode = async () => {
                             </div>
                         </div>
                     )}
+
+                    {showMenu && (
+                        <div className="menu-overlay" onClick={() => setShowMenu(false)}>
+                            <div className="menu-container" onClick={(e) => e.stopPropagation()}>
+                                <div className="menu-header">
+                                    <h2 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', margin: 0}}>FIT FINESSE</h2>
+                                    <button 
+                                        className="menu-close-btn"
+                                        onClick={() => setShowMenu(false)}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                                
+                                <div className="menu-content">
+                                    <div className="menu-profile">
+                                        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>👤</div>
+                                        <div style={{fontWeight: '600', fontSize: '1.1rem'}}>{user?.name}</div>
+                                        <div style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>{user?.email}</div>
+                                        <div style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>{user?.phone}</div>
+                                    </div>
+                                    
+                                    <div className="menu-divider"></div>
+                                    
+                                    <button className="menu-item" onClick={() => {setShowMenu(false); /* Navigate to How It Works */}}>
+                                        <span>📖</span>
+                                        <span>How It Works</span>
+                                    </button>
+                                    
+                                    <button className="menu-item" onClick={() => {setShowMenu(false); /* Navigate to FAQ */}}>
+                                        <span>💬</span>
+                                        <span>FAQ</span>
+                                    </button>
+                                    
+                                    <button className="menu-item" onClick={() => window.location.href = 'mailto:support@fitfinesse.app'}>
+                                        <span>📧</span>
+                                        <span>Contact Support</span>
+                                    </button>
+                                    
+                                    <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/terms', '_blank')}>
+                                        <span>📄</span>
+                                        <span>Terms of Service</span>
+                                    </button>
+                                    
+                                    <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>
+                                        <span>🔒</span>
+                                        <span>Privacy Policy</span>
+                                    </button>
+                                    
+                                    <div className="menu-divider"></div>
+                                    
+                                    <button className="menu-item menu-logout" onClick={handleLogout}>
+                                        <span>🚪</span>
+                                        <span>Logout</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }
-
-
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
