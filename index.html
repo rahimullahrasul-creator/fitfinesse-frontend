@@ -669,6 +669,102 @@
     margin-top: 0.5rem;
 }
 
+/* Content Pages */
+.content-page {
+    min-height: 100vh;
+    background: var(--bg-color);
+    padding-bottom: 2rem;
+}
+
+.content-header {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--neon-green);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.back-btn:hover {
+    opacity: 0.7;
+}
+
+.content-body {
+    padding: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* How It Works Sections */
+.how-it-works-section {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 5rem;
+}
+
+.step-number {
+    position: absolute;
+    left: 1.5rem;
+    top: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--neon-green);
+    color: var(--bg-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue';
+    font-size: 1.5rem;
+}
+
+.how-it-works-section h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.how-it-works-section p {
+    margin: 0;
+    color: var(--light-gray);
+    line-height: 1.6;
+}
+
+/* FAQ Items */
+.faq-item {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.faq-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--neon-green);
+}
+
+.faq-item p {
+    margin: 0;
+    color: var(--light-gray);
+    line-height: 1.6;
+}
+
 /* Animations */
 @keyframes slideInRight {
     from {
@@ -826,6 +922,7 @@ async cancelPool(poolId) {
             const [activeNav, setActiveNav] = useState('pools');
             const [showModal, setShowModal] = useState(false);
             const [showMenu, setShowMenu] = useState(false);
+            const [activeView, setActiveView] = useState('app');
             const [modalContent, setModalContent] = useState({});
             const [error, setError] = useState('');
             const [loading, setLoading] = useState(false);
@@ -1252,8 +1349,10 @@ const sendVerificationCode = async () => {
             }
             // Main App
             return (
-                <div className="container">
-                    <div className="header">
+                <>
+                    {activeView === 'app' ? (
+                        <div className="container">
+                            <div className="header">
                         <h1>FIT FINESSE</h1>
                         <p style={{fontSize: '1.1rem'}}>Hey {user?.name}, keep grinding 💪</p>
                         <button 
@@ -1756,12 +1855,18 @@ const sendVerificationCode = async () => {
                                     
                                     <div className="menu-divider"></div>
                                     
-                                    <button className="menu-item" onClick={() => {setShowMenu(false); /* Navigate to How It Works */}}>
+                                    <button className="menu-item" onClick={() => {
+                                        setShowMenu(false);
+                                        setActiveView('how-it-works');
+                                    }}>
                                         <span>📖</span>
                                         <span>How It Works</span>
                                     </button>
-                                    
-                                    <button className="menu-item" onClick={() => {setShowMenu(false); /* Navigate to FAQ */}}>
+
+                                    <button className="menu-item" onClick={() => {
+                                        setShowMenu(false);
+                                        setActiveView('faq');
+                                    }}>
                                         <span>💬</span>
                                         <span>FAQ</span>
                                     </button>
@@ -1792,7 +1897,123 @@ const sendVerificationCode = async () => {
                         </div>
                     )}
                 </div>
-            );
+            ) : activeView === 'how-it-works' ? (
+                <div className="content-page">
+                    <div className="content-header">
+                        <button className="back-btn" onClick={() => setActiveView('app')}>
+                            ← Back
+                        </button>
+                        <h1 style={{fontFamily: 'Bebas Neue', fontSize: '2rem', margin: 0}}>HOW IT WORKS</h1>
+                    </div>
+                    <div className="content-body">
+                        <div className="how-it-works-section">
+                            <div className="step-number">1</div>
+                            <h3>Create or Join a Pool</h3>
+                            <p>Set your weekly gym goal (3-7 days) and stake real money ($5-$100). Invite friends or join existing pools.</p>
+                        </div>
+                        
+                        <div className="how-it-works-section">
+                            <div className="step-number">2</div>
+                            <h3>Check In Daily</h3>
+                            <p>Pools run Monday-Sunday. Check in from the gym once per day. Your location verifies you're actually there.</p>
+                        </div>
+                        
+                        <div className="how-it-works-section">
+                            <div className="step-number">3</div>
+                            <h3>Win or Lose</h3>
+                            <p>Hit your goal? You're a winner! Winners split the pot from those who didn't make it. Miss your goal? You forfeit your stake.</p>
+                        </div>
+                        
+                        <div className="how-it-works-section">
+                            <div className="step-number">4</div>
+                            <h3>Get Paid</h3>
+                            <p>Winnings are credited Monday morning after your pool completes. Winners take home their stake plus a share of the pot.</p>
+                        </div>
+                        
+                        <div style={{
+                            background: 'var(--dark-gray)',
+                            padding: '1.5rem',
+                            borderRadius: '12px',
+                            marginTop: '2rem'
+                        }}>
+                            <h3 style={{color: 'var(--neon-green)', marginTop: 0}}>What if everyone wins?</h3>
+                            <p style={{margin: 0}}>Everyone gets their full stake back with no fees. We only charge when there are losers.</p>
+                        </div>
+                        
+                        <div style={{
+                            background: 'var(--dark-gray)',
+                            padding: '1.5rem',
+                            borderRadius: '12px',
+                            marginTop: '1rem'
+                        }}>
+                            <h3 style={{color: 'var(--electric-orange)', marginTop: 0}}>What if nobody wins?</h3>
+                            <p style={{margin: 0}}>50% goes to charity, 50% covers operational costs.</p>
+                        </div>
+                    </div>
+                </div>
+            ) : activeView === 'faq' ? (
+                <div className="content-page">
+                    <div className="content-header">
+                        <button className="back-btn" onClick={() => setActiveView('app')}>
+                            ← Back
+                        </button>
+                        <h1 style={{fontFamily: 'Bebas Neue', fontSize: '2rem', margin: 0}}>FAQ</h1>
+                    </div>
+                    <div className="content-body">
+                        <div className="faq-item">
+                            <h3>How do check-ins work?</h3>
+                            <p>Check in once per day from your gym. Your location is verified to ensure accountability. You can only check in once every 24 hours.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>When do pools start and end?</h3>
+                            <p>All pools run Monday 12:01 AM to Sunday 11:59 PM Central Time. You have one week to hit your goal.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>How are payouts calculated?</h3>
+                            <p>Winners split the losers' stakes. We take a 5% fee from forfeited money only. If everyone wins, everyone gets their full stake back with no fees.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>Can I cancel a pool?</h3>
+                            <p>Only before the week starts (Monday 12:01 AM). Once the week begins, you're committed for accountability.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>Can I leave a pool mid-week?</h3>
+                            <p>No. Pools lock once they start to ensure everyone is equally committed.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>How do I invite friends?</h3>
+                            <p>Enter their email when creating a pool. They'll receive an invitation to accept or decline.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>What happens if I miss my goal?</h3>
+                            <p>You forfeit your stake. Winners will split it (minus our 5% fee).</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>When do I get paid if I win?</h3>
+                            <p>Winnings are credited to your account Monday morning after your pool completes.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>What's the maximum pool size?</h3>
+                            <p>You can be in up to 5 active pools at once. Each pool can have unlimited members.</p>
+                        </div>
+                        
+                        <div className="faq-item">
+                            <h3>Is my payment information secure?</h3>
+                            <p>Yes. All payments are processed through Stripe, an industry-leading payment processor. We never store your credit card information.</p>
+                        </div>
+                    </div>
+                </div>
+            ) : null}
+        </>
+    );
         }
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
