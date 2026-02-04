@@ -1797,7 +1797,7 @@ const sendVerificationCode = async () => {
             )}
                     </div>
 
-                    <div className="nav">
+                        <div className="nav">
                         <div 
                             className={`nav-item ${activeNav === 'pools' ? 'active' : ''}`}
                             onClick={() => setActiveNav('pools')}
@@ -1811,16 +1811,16 @@ const sendVerificationCode = async () => {
                             Create
                         </div>
                         <div 
-                            className={`nav-item ${activeNav === 'stats' ? 'active' : ''}`}
-                            onClick={() => setActiveNav('stats')}
-                        >
-                            Stats
-                        </div>
-                        <div
                             className={`nav-item ${activeNav === 'history' ? 'active' : ''}`}
                             onClick={() => setActiveNav('history')}
                         >
                             <span>History</span>
+                        </div>
+                        <div 
+                            className={`nav-item ${activeNav === 'stats' ? 'active' : ''}`}
+                            onClick={() => setActiveNav('stats')}
+                        >
+                            Stats
                         </div>
                         </div>
                     
@@ -1833,7 +1833,7 @@ const sendVerificationCode = async () => {
                             </div>
                         </div>
                     )}
-
+                      
                     {showMenu && (
                         <div className="menu-overlay" onClick={() => setShowMenu(false)}>
                             <div className="menu-container" onClick={(e) => e.stopPropagation()}>
