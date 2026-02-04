@@ -1469,8 +1469,16 @@ const sendVerificationCode = async () => {
     const start = new Date(startYear, startMonth - 1, startDay);
     const end = new Date(endYear, endMonth - 1, endDay);
     
-    const monthName = start.toLocaleDateString('en-US', {month: 'short'});
-    return `${monthName} ${start.getDate()} - ${end.getDate()}`;
+    const startMonthName = start.toLocaleDateString('en-US', {month: 'short'});
+    const endMonthName = end.toLocaleDateString('en-US', {month: 'short'});
+    
+    // If same month, show: "Jan 26-31"
+    // If different months, show: "Jan 26 - Feb 1"
+    if (startMonth === endMonth) {
+        return `${startMonthName} ${start.getDate()}-${end.getDate()}`;
+    } else {
+        return `${startMonthName} ${start.getDate()} - ${endMonthName} ${end.getDate()}`;
+    }
 })()}
                                             </div>
                                         </div>
