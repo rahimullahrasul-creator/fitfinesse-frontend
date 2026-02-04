@@ -1548,7 +1548,7 @@ const sendVerificationCode = async () => {
                             <>
                                 <div className="stats-grid animate-in">
                                     <div className="stat-card">
-                                        <div className="stat-value">${stats.total_winnings}</div>
+                                        <div className="stat-value">${Math.max(0, stats.total_winnings)}</div>
                                         <div className="stat-label">Total Winnings</div>
                                     </div>
                                     <div className="stat-card">
