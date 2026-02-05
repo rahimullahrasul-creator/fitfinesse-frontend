@@ -1644,13 +1644,15 @@ const sendVerificationCode = async () => {
         setAuthMode(authMode === 'login' ? 'signup' : 'login');
         setError('');
         setPhone('+1 '); // Reset phone to default
-    setPhoneVerificationSent(false); // Reset verification state
-    if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-        // Clear the form
+        setPhoneVerificationSent(false); // Reset verification state
+        
+        // Clear the form FIRST
         e.target.closest('form').reset();
-         }
+        
+        if (window.recaptchaVerifier) {
+            window.recaptchaVerifier.clear();
+            window.recaptchaVerifier = null;
+        }
     }}>
         {authMode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Login'}
     </button>
