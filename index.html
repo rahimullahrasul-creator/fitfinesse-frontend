@@ -1503,14 +1503,21 @@ const sendVerificationCode = async () => {
                                 position: 'absolute',
                                 top: '1.5rem',
                                 left: '1.5rem',
-                                fontSize: '1rem',
+                                fontSize: '1.5rem',
+                                fontWeight: '700',
                                 textDecoration: 'none',
                                 color: 'var(--electric-orange)'
                             }}
                         >
                 ← Back
             </button>
-            <h1 className="logo">FIT FINESSE</h1>
+            <h1 
+                className="logo" 
+                onClick={() => setShowAuth(false)}
+                style={{cursor: 'pointer'}}
+            >
+                FIT FINESSE
+            </h1>
                         <p className="tagline">Bet on Yourself</p>
 <form className="auth-form" onSubmit={handleAuth}>
     <div id="recaptcha-container"></div>
