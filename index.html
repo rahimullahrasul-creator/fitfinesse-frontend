@@ -785,6 +785,267 @@
         opacity: 1;
     }
 }
+
+/* ========================================
+   LANDING PAGE STYLES
+   ======================================== */
+
+.landing {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f1e8 0%, #e8e4f0 50%, #e0e8f5 100%);
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.hero-content {
+    max-width: 800px;
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+    color: #1a1a1a;
+    letter-spacing: 1px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #4a4a4a;
+    margin: 0 0 2.5rem 0;
+    font-weight: 400;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, var(--neon-green), #00cc33);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 255, 0, 0.4);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    font-size: 2rem;
+    color: #4a4a4a;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* How It Works Section */
+.how-it-works {
+    padding: 6rem 2rem;
+    background: white;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    margin: 0 0 3rem 0;
+    color: #1a1a1a;
+    letter-spacing: 2px;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.step-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--neon-green), #00cc33);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    margin: 0 auto 1.5rem auto;
+}
+
+.step-card h3 {
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.step-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+}
+
+/* Preview Section */
+.preview {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #f5f1e8 0%, #e8e4f0 100%);
+    text-align: center;
+}
+
+.preview-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.phone-mockup {
+    width: 300px;
+    height: 600px;
+    background: #1a1a1a;
+    border-radius: 40px;
+    padding: 12px;
+    margin: 0 auto 2rem auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.mockup-screen {
+    width: 100%;
+    height: 100%;
+    background: #0f0f0f;
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+.preview-text {
+    font-size: 1.3rem;
+    color: #4a4a4a;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Final CTA Section */
+.final-cta {
+    padding: 6rem 2rem;
+    background: white;
+    text-align: center;
+}
+
+.signin-link {
+    margin-top: 1.5rem;
+    color: #666;
+    font-size: 1rem;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: var(--neon-green);
+    cursor: pointer;
+    font-size: inherit;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.link-button:hover {
+    opacity: 0.7;
+}
+
+.footer-links {
+    margin-top: 3rem;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.footer-links .link-button {
+    color: #999;
+    text-decoration: none;
+}
+
+.footer-links .link-button:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .steps {
+        grid-template-columns: 1fr;
+    }
+    
+    .phone-mockup {
+        width: 250px;
+        height: 500px;
+    }
+}
         
     </style>
     <!-- Firebase SDK -->
@@ -1351,9 +1612,86 @@ const sendVerificationCode = async () => {
             }
             // Main App
             return (
-                <>
-                    {activeView === 'app' ? (
-                        <div className="container">
+    <>
+        {!user ? (
+            // Landing page for logged-out users
+            <div className="landing">
+                {/* Hero Section */}
+                <section className="hero">
+                    <div className="hero-content">
+                        <h1 className="hero-title">
+                            BET ON YOURSELF.<br/>
+                            WIN TOGETHER.
+                        </h1>
+                        <p className="hero-subtitle">
+                            Turn gym goals into financial accountability.<br/>
+                            Real stakes. Real results.
+                        </p>
+                        <button className="cta-button" onClick={() => setShowAuth(true)}>
+                            GET STARTED →
+                        </button>
+                    </div>
+                    <div className="scroll-indicator">↓</div>
+                </section>
+
+                {/* How It Works Section */}
+                <section className="how-it-works">
+                    <h2 className="section-title">HOW IT WORKS</h2>
+                    <div className="steps">
+                        <div className="step-card">
+                            <div className="step-number">1</div>
+                            <h3>Stake Money</h3>
+                            <p>Put real money on the line. Create or join weekly pools with $5-$100 stakes. Commitment starts Monday.</p>
+                        </div>
+                        <div className="step-card">
+                            <div className="step-number">2</div>
+                            <h3>Check In Daily</h3>
+                            <p>Track your gym visits throughout the week. Location verified. One check-in per day.</p>
+                        </div>
+                        <div className="step-card">
+                            <div className="step-number">3</div>
+                            <h3>Win or Split</h3>
+                            <p>Hit your goal? Split the pot from those who didn't. Miss it? Forfeit your stake. Winners take home profit.</p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* App Preview Section */}
+                <section className="preview">
+                    <div className="preview-content">
+                        <div className="phone-mockup">
+                            <div className="mockup-screen">
+                                <div style={{padding: '2rem', textAlign: 'center'}}>
+                                    <div style={{fontSize: '3rem', marginBottom: '1rem'}}>💪</div>
+                                    <div style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '0.5rem'}}>YOUR POOLS</div>
+                                    <div style={{color: 'var(--light-gray)'}}>Track your commitment</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p className="preview-text">Financial accountability meets fitness goals.</p>
+                    </div>
+                </section>
+
+                {/* Final CTA Section */}
+                <section className="final-cta">
+                    <h2 className="section-title">READY TO COMMIT?</h2>
+                    <button className="cta-button" onClick={() => setShowAuth(true)}>
+                        GET STARTED →
+                    </button>
+                    <p className="signin-link">
+                        Already have an account? <button className="link-button" onClick={() => setShowAuth(true)}>Sign In</button>
+                    </p>
+                    <div className="footer-links">
+                        <button className="link-button" onClick={() => window.open('https://fitfinesse.app/terms', '_blank')}>Terms</button>
+                        <span> • </span>
+                        <button className="link-button" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>Privacy</button>
+                        <span> • </span>
+                        <button className="link-button" onClick={() => window.location.href = 'mailto:support@fitfinesse.app'}>Contact</button>
+                    </div>
+                </section>
+            </div>
+        ) : activeView === 'app' ? (
+            <div className="container">
                             <div className="header">
                         <h1>FIT FINESSE</h1>
                         <p style={{fontSize: '1.1rem'}}>Consistency wins, {user?.name}.</p>
