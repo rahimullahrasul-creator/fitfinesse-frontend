@@ -843,20 +843,6 @@
     font-weight: 400;
 }
 
-/* Geometric dotted pattern */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(circle, rgba(26, 26, 26, 0.08) 1px, transparent 1px);
-    background-size: 30px 30px;
-    z-index: 0;
-    opacity: 0.5;
-}
-
 .cta-button {
     background: linear-gradient(135deg, var(--neon-green), #00cc33);
     color: white;
@@ -1058,6 +1044,19 @@
     }
 }
 
+/* Geometric dotted pattern */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(26, 26, 26, 0.08) 1px, transparent 1px);
+    background-size: 30px 30px;
+    z-index: 0;
+    opacity: 0.5;
+}
 
     </style>
     <!-- Firebase SDK -->
