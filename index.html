@@ -1184,6 +1184,7 @@ async cancelPool(poolId) {
             const [stats, setStats] = useState(null);
             const [activeNav, setActiveNav] = useState('pools');
             const [showModal, setShowModal] = useState(false);
+            const [showAuth, setShowAuth] = useState(false);
             const [showMenu, setShowMenu] = useState(false);
             const [activeView, setActiveView] = useState('app');
             const [modalContent, setModalContent] = useState({});
@@ -1466,7 +1467,9 @@ const sendVerificationCode = async () => {
             };
 
             // Auth Screen
-            if (currentScreen === 'auth') {
+            if (showAuth && !user) {
+                return (
+                    <div className="auth-screen">
                 return (
                     <div className="auth-screen animate-in">
                         <h1 className="logo">FIT FINESSE</h1>
