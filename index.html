@@ -1051,9 +1051,9 @@
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.3;  /* ← Increased from 0.08 to 0.3 for testing */
+    opacity: 0.3;
     z-index: 0;
-    animation: float 20s infinite ease-in-out;
+    animation: float 10s infinite ease-in-out;  /* ← Changed from 20s to 10s */
 }
 
 .hero::before {
@@ -1068,12 +1068,12 @@
 .hero::after {
     width: 400px;
     height: 400px;
-    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-    bottom: 10%;  /* ← Changed from -150px */
-    right: 5%;    /* ← Changed from -100px */
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);  /* ← Red gradient */
+    bottom: 10%;
+    right: 5%;
     animation-delay: 5s;
 }
-
+        
 /* Floating animation */
 @keyframes float {
     0%, 100% {
