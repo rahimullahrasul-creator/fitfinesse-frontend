@@ -2280,36 +2280,36 @@ const sendVerificationCode = async () => {
                 <div className="menu-divider"></div>
                 
                 <button className="menu-item" onClick={() => {
-                    setShowMenu(false);
-                    setActiveView('how-it-works');
-                }}>
-                    <span>How It Works</span>
-                </button>
+    setShowMenu(false);
+    setActiveView('how-it-works');
+}}>
+    How It Works
+</button>
 
-                <button className="menu-item" onClick={() => {
-                    setShowMenu(false);
-                    setActiveView('faq');
-                }}>
-                    <span>FAQ</span>
-                </button>
-                
-                <button className="menu-item" onClick={() => window.location.href = 'mailto:support@fitfinesse.app'}>
-                    <span>Contact Support</span>
-                </button>
-                
-                <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/terms', '_blank')}>
-                    <span>Terms of Service</span>
-                </button>
-                
-                <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>
-                    <span>Privacy Policy</span>
-                </button>
-                
-                <div className="menu-divider"></div>
-                
-                <button className="menu-item menu-logout" onClick={handleLogout}>
-                    <span>Logout</span>
-                </button>
+<button className="menu-item" onClick={() => {
+    setShowMenu(false);
+    setActiveView('faq');
+}}>
+    FAQ
+</button>
+
+<button className="menu-item" onClick={() => window.location.href = 'mailto:support@fitfinesse.app'}>
+    Contact Support
+</button>
+
+<button className="menu-item" onClick={() => window.open('https://fitfinesse.app/terms', '_blank')}>
+    Terms of Service
+</button>
+
+<button className="menu-item" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>
+    Privacy Policy
+</button>
+
+<div className="menu-divider"></div>
+
+<button className="menu-item menu-logout" onClick={handleLogout}>
+    Logout
+</button>
             </div>
         </div>
     </div>
