@@ -1516,20 +1516,27 @@ const sendVerificationCode = async () => {
                 return (
                     <div className="auth-screen animate-in">
                         <button 
-                            className="link-btn" 
-                            onClick={() => setShowAuth(false)}
-                            style={{
-                                position: 'absolute',
-                                top: '1.5rem',
-                                left: '1.5rem',
-                                fontSize: '1rem',
-                                fontWeight: '450',
-                                textDecoration: 'none',
-                                color: 'var(--electric-orange)'
-                            }}
-                        >
-                ← Back
-            </button>
+    onClick={() => setShowAuth(false)}
+    style={{
+        position: 'absolute',
+        top: '1.5rem',
+        left: '1.5rem',
+        background: 'none',
+        border: 'none',
+        color: 'var(--electric-orange)',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        fontSize: '1rem',
+        fontWeight: '600'
+    }}
+>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Back
+</button>
             <h1 
                 className="logo" 
                 onClick={() => setShowAuth(false)}
