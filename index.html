@@ -1051,7 +1051,7 @@
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.08;
+    opacity: 0.3;  /* ← Increased from 0.08 to 0.3 for testing */
     z-index: 0;
     animation: float 20s infinite ease-in-out;
 }
@@ -1060,8 +1060,8 @@
     width: 500px;
     height: 500px;
     background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
-    top: -200px;
-    left: -100px;
+    top: 10%;  /* ← Changed from -200px */
+    left: 5%;  /* ← Changed from -100px */
     animation-delay: 0s;
 }
 
@@ -1069,8 +1069,8 @@
     width: 400px;
     height: 400px;
     background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-    bottom: -150px;
-    right: -100px;
+    bottom: 10%;  /* ← Changed from -150px */
+    right: 5%;    /* ← Changed from -100px */
     animation-delay: 5s;
 }
 
