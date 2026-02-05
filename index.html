@@ -1014,10 +1014,10 @@
     }
     
     .steps {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));  /* Changed from 280px to 350px */
     gap: 2rem;
-    max-width: 600px;  /* Narrower for vertical stacking */
+    max-width: 1200px;
     margin: 0 auto;
 }
     
