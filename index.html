@@ -668,7 +668,7 @@
 
 .menu-profile {
     text-align: center;
-    padding: 2rem 1rem 1.5rem;
+    padding: 2rem 1rem;  /* ← Reduced bottom padding */
 }
 
 .menu-item:hover {
@@ -683,7 +683,9 @@
 
 .menu-logout {
     color: var(--electric-orange);
-    margin-top: 0.5rem;
+    border-bottom: none;
+    font-weight: 600;
+    margin-top: 1rem;  /* ← Add space above logout */
 }
 
 /* Content Pages */
@@ -2304,8 +2306,6 @@ const sendVerificationCode = async () => {
 <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>
     Privacy Policy
 </button>
-
-<div className="menu-divider"></div>
 
 <button className="menu-item menu-logout" onClick={handleLogout}>
     Logout
