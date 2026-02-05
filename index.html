@@ -642,16 +642,34 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
+    padding: 1.2rem 1.5rem;
     background: none;
     border: none;
     color: white;
     font-size: 1rem;
     cursor: pointer;
-    border-radius: 8px;
     transition: background 0.2s;
     text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-item span {
+    font-weight: 500;
+}
+
+.menu-logout {
+    color: var(--electric-orange);
+    border-bottom: none;
+    font-weight: 600;
+}
+
+.menu-profile {
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
 }
 
 .menu-item:hover {
@@ -2228,69 +2246,75 @@ const sendVerificationCode = async () => {
                     )}
                       
                     {showMenu && (
-                        <div className="menu-overlay" onClick={() => setShowMenu(false)}>
-                            <div className="menu-container" onClick={(e) => e.stopPropagation()}>
-                                <div className="menu-header">
-                                    <h2 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', margin: 0}}>FIT FINESSE</h2>
-                                    <button 
-                                        className="menu-close-btn"
-                                        onClick={() => setShowMenu(false)}
-                                    >
-                                        ✕
-                                    </button>
-                                </div>
-                                
-                                <div className="menu-content">
-                                    <div className="menu-profile">
-                                        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>👤</div>
-                                        <div style={{fontWeight: '600', fontSize: '1.1rem'}}>{user?.name}</div>
-                                        <div style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>{user?.email}</div>
-                                        <div style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>{user?.phone}</div>
-                                    </div>
-                                    
-                                    <div className="menu-divider"></div>
-                                    
-                                    <button className="menu-item" onClick={() => {
-                                        setShowMenu(false);
-                                        setActiveView('how-it-works');
-                                    }}>
-                                        <span>📖</span>
-                                        <span>How It Works</span>
-                                    </button>
+    <div className="menu-overlay" onClick={() => setShowMenu(false)}>
+        <div className="menu-container" onClick={(e) => e.stopPropagation()}>
+            <div className="menu-header">
+                <h2 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', margin: 0}}>MENU</h2>
+                <button 
+                    className="menu-close-btn"
+                    onClick={() => setShowMenu(false)}
+                >
+                    ✕
+                </button>
+            </div>
+            
+            <div className="menu-content">
+                <div className="menu-profile">
+                    <div style={{
+                        width: '60px',
+                        height: '60px',
+                        background: 'linear-gradient(135deg, var(--electric-orange), var(--neon-green))',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.8rem',
+                        fontWeight: '700',
+                        margin: '0 auto 1rem'
+                    }}>
+                        {user?.name?.charAt(0).toUpperCase()}
+                    </div>
+                    <div style={{fontWeight: '600', fontSize: '1.1rem', marginBottom: '0.25rem'}}>{user?.name}</div>
+                    <div style={{color: 'var(--light-gray)', fontSize: '0.85rem'}}>{user?.email}</div>
+                </div>
+                
+                <div className="menu-divider"></div>
+                
+                <button className="menu-item" onClick={() => {
+                    setShowMenu(false);
+                    setActiveView('how-it-works');
+                }}>
+                    <span>How It Works</span>
+                </button>
 
-                                    <button className="menu-item" onClick={() => {
-                                        setShowMenu(false);
-                                        setActiveView('faq');
-                                    }}>
-                                        <span>💬</span>
-                                        <span>FAQ</span>
-                                    </button>
-                                    
-                                    <button className="menu-item" onClick={() => window.location.href = 'mailto:support@fitfinesse.app'}>
-                                        <span>📧</span>
-                                        <span>Contact Support</span>
-                                    </button>
-                                    
-                                    <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/terms', '_blank')}>
-                                        <span>📄</span>
-                                        <span>Terms of Service</span>
-                                    </button>
-                                    
-                                    <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>
-                                        <span>🔒</span>
-                                        <span>Privacy Policy</span>
-                                    </button>
-                                    
-                                    <div className="menu-divider"></div>
-                                    
-                                    <button className="menu-item menu-logout" onClick={handleLogout}>
-                                        <span>🚪</span>
-                                        <span>Logout</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                <button className="menu-item" onClick={() => {
+                    setShowMenu(false);
+                    setActiveView('faq');
+                }}>
+                    <span>FAQ</span>
+                </button>
+                
+                <button className="menu-item" onClick={() => window.location.href = 'mailto:support@fitfinesse.app'}>
+                    <span>Contact Support</span>
+                </button>
+                
+                <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/terms', '_blank')}>
+                    <span>Terms of Service</span>
+                </button>
+                
+                <button className="menu-item" onClick={() => window.open('https://fitfinesse.app/privacy', '_blank')}>
+                    <span>Privacy Policy</span>
+                </button>
+                
+                <div className="menu-divider"></div>
+                
+                <button className="menu-item menu-logout" onClick={handleLogout}>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+)}
                 </div>
             ) : activeView === 'how-it-works' ? (
                 <div className="content-page">
