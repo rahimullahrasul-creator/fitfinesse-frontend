@@ -934,6 +934,10 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    min-height: 220px;  /* ← ADD THIS */
+    display: flex;      /* ← ADD THIS */
+    flex-direction: column;  /* ← ADD THIS */
+    justify-content: flex-start;  /* ← ADD THIS */
 }
 
 .step-card:hover {
