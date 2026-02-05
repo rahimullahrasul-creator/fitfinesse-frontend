@@ -1496,7 +1496,21 @@ const sendVerificationCode = async () => {
             if (showAuth && !user) {
                 return (
                     <div className="auth-screen animate-in">
-                        <h1 className="logo">FIT FINESSE</h1>
+                        <button 
+                            className="link-btn" 
+                            onClick={() => setShowAuth(false)}
+                            style={{
+                                position: 'absolute',
+                                top: '1.5rem',
+                                left: '1.5rem',
+                                fontSize: '1rem',
+                                textDecoration: 'none',
+                                color: 'var(--electric-orange)'
+                            }}
+                        >
+                ← Back
+            </button>
+            <h1 className="logo">FIT FINESSE</h1>
                         <p className="tagline">Bet on Yourself</p>
 <form className="auth-form" onSubmit={handleAuth}>
     <div id="recaptcha-container"></div>
