@@ -1893,7 +1893,7 @@ const sendVerificationCode = async () => {
                                             <div className="pool-header">
     <div>
         <div className="pool-name">{pool.name}</div>
-        <div style={{fontSize: '0.75rem', color: 'var(--light-gray)', marginTop: '0.25rem'}}>
+        <div style={{fontSize: '0.85rem', color: 'var(--light-gray)', marginTop: '0.25rem'}}>
             {(() => {
     // Parse dates without timezone conversion
     const [startYear, startMonth, startDay] = pool.week_start.split('-').map(Number);
@@ -1913,7 +1913,7 @@ const sendVerificationCode = async () => {
                                             <div className="pool-info">
                                                 <div className="info-item">
                                                     <div className="info-label">Your Progress</div>
-                                                    <div className="info-value">{pool.your_checkins}/{pool.weekly_goal}</div>
+                                                    <div className="info-value">{pool.your_checkins}/{pool.weekly_goal} Days</div>
                                                 </div>
                                                 <div className="info-item">
                                                     <div className="info-label">Stake</div>
