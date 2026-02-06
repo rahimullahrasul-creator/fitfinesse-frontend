@@ -1275,15 +1275,6 @@ const [confirmationResult, setConfirmationResult] = useState(null);
         console.error('Failed to load pools:', err);
     }
 };
-                    setPools(poolsData);
-
-                    // Load history too
-                    const historyData = await api.getHistory();
-                    setHistoryPools(historyData);
-                } catch (err) {
-                    console.error('Failed to load pools:', err);
-                }
-            };
 
             const loadStats = async () => {
                 try {
