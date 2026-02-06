@@ -707,12 +707,15 @@
 .back-btn {
     background: none;
     border: none;
-    color: var(--neon-green);
-    font-size: 1rem;
+    color: var(--electric-orange);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
     padding: 0.5rem 0;
     margin-bottom: 1rem;
-    display: block;
 }
 
 .back-btn:hover {
@@ -731,14 +734,13 @@
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 1rem;
-    position: relative;
-    padding-left: 5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
 }
 
 .step-number {
-    position: absolute;
-    left: 1.5rem;
-    top: 1.5rem;
+    flex-shrink: 0;
     width: 2.5rem;
     height: 2.5rem;
     background: var(--neon-green);
@@ -750,7 +752,6 @@
     font-family: 'Bebas Neue';
     font-size: 1.5rem;
 }
-
 .how-it-works-section h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
@@ -2332,9 +2333,15 @@ const sendVerificationCode = async () => {
             ) : activeView === 'how-it-works' ? (
                 <div className="content-page">
                     <div className="content-header">
-                        <button className="back-btn" onClick={() => setActiveView('app')}>
-                            ← Back
-                        </button>
+                        <button 
+    className="back-btn"
+    onClick={() => setActiveView('app')}
+>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Back
+</button>
                         <h1 style={{fontFamily: 'Bebas Neue', fontSize: '2rem', margin: 0}}>HOW IT WORKS</h1>
                     </div>
                     <div className="content-body">
@@ -2386,9 +2393,15 @@ const sendVerificationCode = async () => {
             ) : activeView === 'faq' ? (
                 <div className="content-page">
                     <div className="content-header">
-                        <button className="back-btn" onClick={() => setActiveView('app')}>
-                            ← Back
-                        </button>
+                        <button 
+    className="back-btn"
+    onClick={() => setActiveView('app')}
+>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Back
+</button>
                         <h1 style={{fontFamily: 'Bebas Neue', fontSize: '2rem', margin: 0}}>FAQ</h1>
                     </div>
                     <div className="content-body">
