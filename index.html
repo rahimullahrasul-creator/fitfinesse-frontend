@@ -1262,10 +1262,10 @@ const [confirmationResult, setConfirmationResult] = useState(null);
             };
 
             const loadPools = async () => {
-    console.log('=== LOADING POOLS ==='); // ← ADD THIS
+    console.log('=== LOADING POOLS ===');
     try {
         const poolsData = await api.getPools();
-        console.log('Pool data:', poolsData); // ← AND THIS
+        console.log('Pool data:', poolsData);
         setPools(poolsData);
 
         // Load history too
