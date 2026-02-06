@@ -1929,14 +1929,14 @@ const sendVerificationCode = async () => {
                                                 <div className="info-label" style={{marginBottom: '0.5rem'}}>Members</div>
                                                 <div className="pool-members">
                                                     {pool.members.map(member => (
-                                                        <div key={member} className="member-badge">
-                                                            <div className={`member-status ${
-                                                                (pool.member_status[member] || 0) >= pool.weekly_goal ? 'success' : 
-                                                                (pool.member_status[member] || 0) > 0 ? 'pending' : 'failed'
-                                                            }`}></div>
-                                                            {member} ({pool.member_status[member] || 0})
-                                                        </div>
-                                                    ))}
+    <div key={member} className="member-badge">
+        <div className={`member-status ${
+            (pool.member_status[member] || 0) >= pool.weekly_goal ? 'success' : 
+            pool.member_checked_in_today?.[member] ? 'pending' : 'failed'
+        }`}></div>
+        {member} ({pool.member_status[member] || 0})
+    </div>
+))}
                                                 </div>
                                             </div>
 
