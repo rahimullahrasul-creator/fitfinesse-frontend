@@ -1267,10 +1267,6 @@ const [confirmationResult, setConfirmationResult] = useState(null);
         const poolsData = await api.getPools();
         console.log('Pool data:', poolsData); // ← AND THIS
         setPools(poolsData);
-    try {
-        const poolsData = await api.getPools();
-        console.log('Pool data:', poolsData); // ← ADD THIS LINE
-        setPools(poolsData);
 
         // Load history too
         const historyData = await api.getHistory();
