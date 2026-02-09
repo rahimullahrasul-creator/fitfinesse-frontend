@@ -2146,20 +2146,22 @@ const sendVerificationCode = async () => {
     </h3>
     
     <label>Name</label>
-    <input 
-        type="text" 
-        id="profileName"
-        defaultValue={user?.name}
-        style={{marginBottom: '1rem'}}
-    />
+<input 
+    type="text" 
+    id="profileName"
+    value={user?.name || ''}
+    onChange={(e) => {}} // Add empty onChange to prevent React warning
+    style={{marginBottom: '1rem'}}
+/>
 
-    <label>Email</label>
-    <input 
-        type="email" 
-        id="profileEmail"
-        defaultValue={user?.email}
-        style={{marginBottom: '1rem'}}
-    />
+<label>Email</label>
+<input 
+    type="email" 
+    id="profileEmail"
+    value={user?.email || ''}
+    onChange={(e) => {}} // Add empty onChange to prevent React warning
+    style={{marginBottom: '1rem'}}
+/>
 
     <label>Phone Number</label>
 <input 
