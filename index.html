@@ -1231,6 +1231,8 @@ async cancelPool(poolId) {
             const [pools, setPools] = useState([]);
             const [historyPools, setHistoryPools] = useState([]);
             const [stats, setStats] = useState(null);
+            const [modalType, setModalType] = useState(null); // 'password' or 'delete'
+            const [passwordInput, setPasswordInput] = useState('');
             const [activeNav, setActiveNav] = useState('pools');
             const [showModal, setShowModal] = useState(false);
             const [showAuth, setShowAuth] = useState(false);
@@ -1240,7 +1242,7 @@ async cancelPool(poolId) {
             const [error, setError] = useState('');
             const [loading, setLoading] = useState(false);
             const [phoneVerificationSent, setPhoneVerificationSent] = useState(false);
-const [confirmationResult, setConfirmationResult] = useState(null);
+            const [confirmationResult, setConfirmationResult] = useState(null);
             const [phone, setPhone] = useState('+1 ');
 
             useEffect(() => {
@@ -2124,93 +2126,223 @@ const sendVerificationCode = async () => {
         </div>
 
         {/* Account Information */}
-        <div className="pool-card" style={{marginBottom: '1.5rem'}}>
-            <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
-                Account Information
-            </h3>
+<div className="pool-card" style={{marginBottom: '1.5rem'}}>
+    <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
+        Account Information
+    </h3>
+    
+    <label>Name</label>
+    <input 
+        type="text" 
+        id="profileName"
+        defaultValue={user?.name}
+        style={{marginBottom: '1rem'}}
+    />
+
+    <label>Email</label>
+    <input 
+        type="email" 
+        id="profileEmail"
+        defaultValue={user?.email}
+        style={{marginBottom: '1rem'}}
+    />
+
+    <label>Phone Number</label>
+    <input 
+        type="tel" 
+        defaultValue={user?.phone}
+        disabled
+        style={{
+            marginBottom: '0.5rem',
+            opacity: 0.6,
+            cursor: 'not-allowed'
+        }}
+    />
+    <small style={{color: 'var(--light-gray)', fontSize: '0.85rem', display: 'block', marginBottom: '1.5rem'}}>
+        Phone number is verified and cannot be changed
+    </small>
+
+    <button 
+        className="btn btn-primary"
+        onClick={async () => {
+            const newName = document.getElementById('profileName').value;
+            const newEmail = document.getElementById('profileEmail').value;
             
-            <label>Name</label>
-            <input 
-                type="text" 
-                defaultValue={user?.name}
-                onBlur={(e) => {
-                    // TODO: Update name API call
-                    console.log('Update name:', e.target.value);
-                }}
-                style={{marginBottom: '1rem'}}
-            />
-
-            <label>Email</label>
-            <input 
-                type="email" 
-                defaultValue={user?.email}
-                onBlur={(e) => {
-                    // TODO: Update email API call
-                    console.log('Update email:', e.target.value);
-                }}
-                style={{marginBottom: '1rem'}}
-            />
-
-            <label>Phone Number</label>
-            <input 
-                type="tel" 
-                defaultValue={user?.phone}
-                disabled
-                style={{
-                    marginBottom: '1rem',
-                    opacity: 0.6,
-                    cursor: 'not-allowed'
-                }}
-            />
-            <small style={{color: 'var(--light-gray)', fontSize: '0.85rem'}}>
-                Phone number is verified and cannot be changed
-            </small>
-        </div>
+            if (!newName || !newEmail) {
+                setError('Name and email are required');
+                return;
+            }
+            
+            try {
+                setLoading(true);
+                // TODO: API call to update user info
+                // await api.updateProfile(newName, newEmail);
+                
+                // Update local user state
+                setUser({...user, name: newName, email: newEmail});
+                
+                setModalContent({
+                    icon: '✅',
+                    title: 'Profile Updated',
+                    message: 'Your information has been saved.'
+                });
+                setShowModal(true);
+                setTimeout(() => setShowModal(false), 2000);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }}
+        disabled={loading}
+    >
+        {loading ? 'Saving...' : 'Save Changes'}
+    </button>
+</div>
 
         {/* Account Actions */}
-        <div className="pool-card">
-            <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
-                Account Actions
-            </h3>
-            
-            <button 
-                className="btn btn-secondary"
-                onClick={() => {
-                    const newPassword = prompt('Enter new password (min 8 characters, must include a number):');
-                    if (newPassword && newPassword.length >= 8 && /\d/.test(newPassword)) {
-                        // TODO: Update password API call
-                        alert('Password updated successfully!');
-                    } else if (newPassword) {
-                        alert('Password must be at least 8 characters and contain a number');
-                    }
-                }}
-                style={{marginBottom: '1rem'}}
-            >
-                Change Password
-            </button>
+<div className="pool-card">
+    <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
+        Account Actions
+    </h3>
+    
+    <button 
+        className="btn btn-secondary"
+        onClick={() => setModalType('password')}
+        style={{marginBottom: '1rem'}}
+    >
+        Change Password
+    </button>
 
-            <button 
-                className="btn btn-secondary"
-                onClick={() => {
-                    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                        if (confirm('This will permanently delete all your data, including pool history and stats. Continue?')) {
-                            // TODO: Delete account API call
-                            handleLogout();
-                        }
-                    }
-                }}
+    <button 
+        className="btn btn-secondary"
+        onClick={() => setModalType('delete')}
+        style={{
+            background: 'var(--danger)',
+            color: 'white',
+            border: 'none'
+        }}
+    >
+        Delete Account
+    </button>
+    </div>
+    </div>
+)}
+
+    {/* Password Change Modal */}
+{modalType === 'password' && (
+    <div className="modal" onClick={() => setModalType(null)}>
+        <div className="modal-content animate-in" onClick={(e) => e.stopPropagation()}>
+            <h2 style={{fontFamily: 'Bebas Neue', fontSize: '1.8rem', marginBottom: '1rem'}}>
+                Change Password
+            </h2>
+            <p style={{color: 'var(--light-gray)', marginBottom: '1.5rem'}}>
+                Password must be at least 8 characters and contain a number
+            </p>
+            <input 
+                type="password"
+                placeholder="Enter new password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
                 style={{
-                    background: 'var(--danger)',
+                    width: '100%',
+                    padding: '1rem',
+                    marginBottom: '1.5rem',
+                    background: 'var(--mid-gray)',
+                    border: '2px solid var(--mid-gray)',
+                    borderRadius: '8px',
                     color: 'white',
-                    border: 'none'
+                    fontSize: '1rem'
                 }}
-            >
-                Delete Account
-            </button>
+            />
+            <div style={{display: 'flex', gap: '1rem'}}>
+                <button 
+                    className="btn btn-secondary"
+                    onClick={() => {
+                        setModalType(null);
+                        setPasswordInput('');
+                    }}
+                    style={{flex: 1}}
+                >
+                    Cancel
+                </button>
+                <button 
+                    className="btn btn-primary"
+                    onClick={async () => {
+                        if (passwordInput.length < 8 || !/\d/.test(passwordInput)) {
+                            setError('Password must be at least 8 characters and contain a number');
+                            return;
+                        }
+                        try {
+                            // TODO: API call to update password
+                            // await api.updatePassword(passwordInput);
+                            
+                            setModalContent({
+                                icon: '✅',
+                                title: 'Password Updated',
+                                message: 'Your password has been changed.'
+                            });
+                            setShowModal(true);
+                            setModalType(null);
+                            setPasswordInput('');
+                            setTimeout(() => setShowModal(false), 2000);
+                        } catch (err) {
+                            setError(err.message);
+                        }
+                    }}
+                    style={{flex: 1}}
+                >
+                    Update Password
+                </button>
+            </div>
         </div>
     </div>
 )}
 
+{/* Delete Account Modal */}
+{modalType === 'delete' && (
+    <div className="modal" onClick={() => setModalType(null)}>
+        <div className="modal-content animate-in" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-icon" style={{fontSize: '3rem'}}>⚠️</div>
+            <h2 style={{fontFamily: 'Bebas Neue', fontSize: '1.8rem', marginBottom: '1rem'}}>
+                Delete Account?
+            </h2>
+            <p style={{color: 'var(--light-gray)', marginBottom: '1.5rem'}}>
+                This will permanently delete all your data, including pool history and stats. This action cannot be undone.
+            </p>
+            <div style={{display: 'flex', gap: '1rem'}}>
+                <button 
+                    className="btn btn-secondary"
+                    onClick={() => setModalType(null)}
+                    style={{flex: 1}}
+                >
+                    Cancel
+                </button>
+                <button 
+                    className="btn btn-primary"
+                    onClick={async () => {
+                        try {
+                            // TODO: API call to delete account
+                            // await api.deleteAccount();
+                            
+                            setModalType(null);
+                            handleLogout();
+                        } catch (err) {
+                            setError(err.message);
+                        }
+                    }}
+                    style={{
+                        flex: 1,
+                        background: 'var(--danger)',
+                        border: 'none'
+                    }}
+                >
+                    Delete Forever
+                </button>
+            </div>
+        </div>
+    </div>
+)}
 
             {activeNav === 'history' && (
                 <div className="history-container">
