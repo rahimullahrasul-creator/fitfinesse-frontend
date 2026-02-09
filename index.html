@@ -1262,7 +1262,6 @@ async cancelPool(poolId) {
             const loadUser = async () => {
                 try {
                     const userData = await api.getMe();
-                    console.log('User data:', userData);
                     setUser(userData);
                     setCurrentScreen('main');
                     loadPools();
@@ -2156,10 +2155,11 @@ const sendVerificationCode = async () => {
     />
 
     <label>Phone Number</label>
-    <input 
+<input 
     type="tel" 
     value={user?.phone || ''}
     disabled
+    readOnly
     style={{
         marginBottom: '0.5rem',
         opacity: 0.6,
