@@ -1,8 +1,28 @@
 {
   "rewrites": [
     {
-      "source": "/((?!terms.html).*)",
+      "source": "/((?!terms\\.html|privacy\\.html|manifest\\.json|.*\\.png|.*\\.jpg).*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/terms.html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/privacy.html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
+      ]
     }
   ]
 }
