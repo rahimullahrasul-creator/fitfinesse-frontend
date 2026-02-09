@@ -2262,7 +2262,7 @@ const sendVerificationCode = async () => {
                         setModalType(null);
                         setPasswordInput('');
                     }}
-                    style={{flex: 1}}
+                    style={{flex: 1, whiteSpace: 'nowrap'}}
                 >
                     Cancel
                 </button>
@@ -2290,7 +2290,7 @@ const sendVerificationCode = async () => {
                             setError(err.message);
                         }
                     }}
-                    style={{flex: 1}}
+                    style={{flex: 1, whiteSpace: 'nowrap'}}
                 >
                     Update Password
                 </button>
@@ -2314,7 +2314,7 @@ const sendVerificationCode = async () => {
                 <button 
                     className="btn btn-secondary"
                     onClick={() => setModalType(null)}
-                    style={{flex: 1}}
+                    style={{flex: 1, whiteSpace: 'nowrap'}}
                 >
                     Cancel
                 </button>
@@ -2335,6 +2335,7 @@ const sendVerificationCode = async () => {
                         flex: 1,
                         background: 'var(--danger)',
                         border: 'none'
+                        whitespace: 'nowrap'
                     }}
                 >
                     Delete Forever
