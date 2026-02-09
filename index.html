@@ -1190,6 +1190,13 @@
                  return api.request('/pools/history');
             },
 
+            async updateProfile(name, email) {
+                return this.request('/auth/update-profile', {
+                    method: 'PUT',
+                    body: JSON.stringify({ name, email })
+                });
+            },
+
             async checkIn(poolId, lat, lng) {
                 return this.request('/checkins', {
                     method: 'POST',
