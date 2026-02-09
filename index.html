@@ -2172,35 +2172,39 @@ const sendVerificationCode = async () => {
     <button 
         className="btn btn-primary"
         onClick={async () => {
-            const newName = document.getElementById('profileName').value;
-            const newEmail = document.getElementById('profileEmail').value;
-            
-            if (!newName || !newEmail) {
-                setError('Name and email are required');
-                return;
-            }
-            
-            try {
-                setLoading(true);
-                // TODO: API call to update user info
-                // await api.updateProfile(newName, newEmail);
-                
-                // Update local user state
-                setUser({...user, name: newName, email: newEmail});
-                
-                setModalContent({
-                    icon: '✅',
-                    title: 'Profile Updated',
-                    message: 'Your information has been saved.'
-                });
-                setShowModal(true);
-                setTimeout(() => setShowModal(false), 2000);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }}
+    const newName = document.getElementById('profileName').value;
+    const newEmail = document.getElementById('profileEmail').value;
+    
+    if (!newName || !newEmail) {
+        setError('Name and email are required');
+        return;
+    }
+    
+    try {
+        setLoading(true);
+        
+        // Call backend API
+        await api.updateProfile(newName, newEmail);
+        
+        // Update local user state
+        setUser({...user, name: newName, email: newEmail});
+        
+        // Reload pools to show updated name
+        loadPools();
+        
+        setModalContent({
+            icon: '✅',
+            title: 'Profile Updated',
+            message: 'Your information has been saved.'
+        });
+        setShowModal(true);
+        setTimeout(() => setShowModal(false), 2000);
+    } catch (err) {
+        setError(err.message);
+    } finally {
+        setLoading(false);
+    }
+}}
         disabled={loading}
     >
         {loading ? 'Saving...' : 'Save Changes'}
