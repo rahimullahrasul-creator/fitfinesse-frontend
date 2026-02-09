@@ -2072,35 +2072,144 @@ const sendVerificationCode = async () => {
                             </form>
                         )}
 
-                        {activeNav === 'stats' && stats && (
-                            <>
-                                <div className="stats-grid animate-in">
-                                    <div className="stat-card">
-                                        <div className="stat-value">${Math.max(0, stats.total_winnings)}</div>
-                                        <div className="stat-label">Total Winnings</div>
-                                    </div>
-                                    <div className="stat-card">
-                                        <div className="stat-value">{stats.total_pools}</div>
-                                        <div className="stat-label">Pools Joined</div>
-                                    </div>
-                                    <div className="stat-card">
-                                        <div className="stat-value">{stats.win_rate}%</div>
-                                        <div className="stat-label">Win Rate</div>
-                                    </div>
-                                    <div className="stat-card">
-                                        <div className="stat-value">{stats.current_streak}</div>
-                                        <div className="stat-label">Week Streak</div>
-                                    </div>
-                                </div>
+                        {activeNav === 'profile' && stats && (
+    <div className="animate-in">
+        {/* Profile Header */}
+        <div className="pool-card" style={{textAlign: 'center', marginBottom: '1.5rem'}}>
+            <div style={{
+                width: '80px',
+                height: '80px',
+                background: 'linear-gradient(135deg, var(--electric-orange), var(--neon-green))',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '2.5rem',
+                fontWeight: '700',
+                margin: '0 auto 1rem'
+            }}>
+                {user?.name?.charAt(0).toUpperCase()}
+            </div>
+            <h2 style={{fontFamily: 'Bebas Neue', fontSize: '2rem', marginBottom: '0.5rem'}}>
+                {user?.name}
+            </h2>
+            <p style={{color: 'var(--light-gray)', fontSize: '0.9rem'}}>
+                {user?.email}
+            </p>
+        </div>
 
-                                <div className="pool-card animate-in">
-                                    <h3 style={{marginBottom: '1rem'}}>Account</h3>
-                                    <button className="btn btn-secondary" onClick={handleLogout}>
-                                        Logout
-                                    </button>
-                                </div>
-                            </>
-                        )}
+        {/* Stats Section */}
+        <div className="pool-card" style={{marginBottom: '1.5rem'}}>
+            <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
+                Your Stats
+            </h3>
+            <div className="stats-grid">
+                <div className="stat-card">
+                    <div className="stat-value">${Math.max(0, stats.total_winnings)}</div>
+                    <div className="stat-label">Total Winnings</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-value">{stats.total_pools}</div>
+                    <div className="stat-label">Active Pools</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-value">{stats.win_rate}%</div>
+                    <div className="stat-label">Win Rate</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-value">{stats.current_streak}</div>
+                    <div className="stat-label">Week Streak</div>
+                </div>
+            </div>
+        </div>
+
+        {/* Account Information */}
+        <div className="pool-card" style={{marginBottom: '1.5rem'}}>
+            <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
+                Account Information
+            </h3>
+            
+            <label>Name</label>
+            <input 
+                type="text" 
+                defaultValue={user?.name}
+                onBlur={(e) => {
+                    // TODO: Update name API call
+                    console.log('Update name:', e.target.value);
+                }}
+                style={{marginBottom: '1rem'}}
+            />
+
+            <label>Email</label>
+            <input 
+                type="email" 
+                defaultValue={user?.email}
+                onBlur={(e) => {
+                    // TODO: Update email API call
+                    console.log('Update email:', e.target.value);
+                }}
+                style={{marginBottom: '1rem'}}
+            />
+
+            <label>Phone Number</label>
+            <input 
+                type="tel" 
+                defaultValue={user?.phone}
+                disabled
+                style={{
+                    marginBottom: '1rem',
+                    opacity: 0.6,
+                    cursor: 'not-allowed'
+                }}
+            />
+            <small style={{color: 'var(--light-gray)', fontSize: '0.85rem'}}>
+                Phone number is verified and cannot be changed
+            </small>
+        </div>
+
+        {/* Account Actions */}
+        <div className="pool-card">
+            <h3 style={{fontFamily: 'Bebas Neue', fontSize: '1.5rem', marginBottom: '1rem'}}>
+                Account Actions
+            </h3>
+            
+            <button 
+                className="btn btn-secondary"
+                onClick={() => {
+                    const newPassword = prompt('Enter new password (min 8 characters, must include a number):');
+                    if (newPassword && newPassword.length >= 8 && /\d/.test(newPassword)) {
+                        // TODO: Update password API call
+                        alert('Password updated successfully!');
+                    } else if (newPassword) {
+                        alert('Password must be at least 8 characters and contain a number');
+                    }
+                }}
+                style={{marginBottom: '1rem'}}
+            >
+                Change Password
+            </button>
+
+            <button 
+                className="btn btn-secondary"
+                onClick={() => {
+                    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                        if (confirm('This will permanently delete all your data, including pool history and stats. Continue?')) {
+                            // TODO: Delete account API call
+                            handleLogout();
+                        }
+                    }
+                }}
+                style={{
+                    background: 'var(--danger)',
+                    color: 'white',
+                    border: 'none'
+                }}
+            >
+                Delete Account
+            </button>
+        </div>
+    </div>
+)}
 
 
             {activeNav === 'history' && (
@@ -2244,10 +2353,10 @@ const sendVerificationCode = async () => {
                             <span>History</span>
                         </div>
                         <div 
-                            className={`nav-item ${activeNav === 'stats' ? 'active' : ''}`}
-                            onClick={() => setActiveNav('stats')}
-                        >
-                            Stats
+                            className={`nav-item ${activeNav === 'profile' ? 'active' : ''}`}
+                            onClick={() => setActiveNav('profile')}
+                            >
+                            Profile
                         </div>
                         </div>
                     
