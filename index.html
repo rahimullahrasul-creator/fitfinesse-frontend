@@ -2157,15 +2157,15 @@ const sendVerificationCode = async () => {
 
     <label>Phone Number</label>
     <input 
-        type="tel" 
-        defaultValue={user?.phone}
-        disabled
-        style={{
-            marginBottom: '0.5rem',
-            opacity: 0.6,
-            cursor: 'not-allowed'
-        }}
-    />
+    type="tel" 
+    value={user?.phone || ''}
+    disabled
+    style={{
+        marginBottom: '0.5rem',
+        opacity: 0.6,
+        cursor: 'not-allowed'
+    }}
+/>
     <small style={{color: 'var(--light-gray)', fontSize: '0.85rem', display: 'block', marginBottom: '1.5rem'}}>
         Phone number is verified and cannot be changed
     </small>
