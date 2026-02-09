@@ -1262,6 +1262,7 @@ async cancelPool(poolId) {
             const loadUser = async () => {
                 try {
                     const userData = await api.getMe();
+                    console.log('User data:', userData);
                     setUser(userData);
                     setCurrentScreen('main');
                     loadPools();
